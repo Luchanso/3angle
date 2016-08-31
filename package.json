@@ -1,0 +1,28 @@
+{
+  "name": "3angle",
+  "version": "0.0.1",
+  "description": "Game",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Luchanso/3angle.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Loutchansky Oleg",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://gitlab.com/Luchanso/3angle/issues"
+  },
+  "homepage": "https://gitlab.com/Luchanso/3angle#README",
+  "dependencies": {
+    "gulp-babel": "^6.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2"
+  }
+}
