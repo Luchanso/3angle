@@ -16,7 +16,7 @@ class Loader extends Phaser.State {
   }
 
   addProgressLable() {
-    var style = {
+    let style = {
       font: '41px Open Sans',
       fill: '#00E676'
     }
@@ -27,6 +27,23 @@ class Loader extends Phaser.State {
 
   refreshProgress(progress, cacheKey, success, totalLoaded, totalFiles) {
     this.progressLable.text = `Loading ${progress}% (${totalLoaded}/${totalFiles})`;
+  }
+
+  generateTriangle() {
+    const size = 256;
+
+    let bitmap = new Phaser.BitmapData(size, size);
+
+    bitmap.ctx.beginPath();
+    bitmap.ctx.fillStyle = 'white';
+    bitmap.ctx.moveTo(0, size);
+    bitmap.ctx.lineTo(size / 2, 0);
+    bitmap.ctx.lineTo(size, size);
+    bitmap.ctx.lineTo(0, size);
+    bitmap.ctx.endPath();
+    bitmap.ctx.fill();
+
+    this.game.cache.addBitmapData('triangle', bitmap);
   }
 }
 
