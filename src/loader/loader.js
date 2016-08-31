@@ -8,6 +8,8 @@ class Loader extends Phaser.State {
 
     this.load.onFileComplete.add(this.refreshProgress, this);
 
+    this.generateTriangle();
+
     // this.load.image('test', 'assets/img/test.jpg');
   }
 
@@ -30,7 +32,7 @@ class Loader extends Phaser.State {
   }
 
   generateTriangle() {
-    const size = 256;
+    const size = 255;
 
     let bitmap = new Phaser.BitmapData(size, size);
 
@@ -40,10 +42,9 @@ class Loader extends Phaser.State {
     bitmap.ctx.lineTo(size / 2, 0);
     bitmap.ctx.lineTo(size, size);
     bitmap.ctx.lineTo(0, size);
-    bitmap.ctx.endPath();
     bitmap.ctx.fill();
 
-    this.game.cache.addBitmapData('triangle', bitmap);
+    this.game.cache.addBitmapData(Engine.keys.triangle, bitmap);
   }
 }
 
