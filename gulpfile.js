@@ -28,6 +28,12 @@ gulp.task('html', function() {
 
 gulp.task('js', function() {
   var src = [
+    'src/engine.js',
+    'src/boot/**/*.js',
+    'src/loader/**/*.js',
+    'src/menu/**/*.js',
+    'src/game/**/*.js',
+    'src/scoreboard/**/*.js',
     'src/app.js'
   ];
 
@@ -37,6 +43,12 @@ gulp.task('js', function() {
       console.error('Error in compress task', err.toString());
     })
     .pipe(concat('app.js'))
+    .pipe(babel({
+      "presets": ["es2015"]
+    }))
+    .on('error', function(err) {
+      console.error('Error in babel task', err.toString());
+    })
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('public'))
     .pipe(connect.reload());
