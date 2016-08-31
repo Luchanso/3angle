@@ -34,6 +34,10 @@ gulp.task('js', () => {
     'src/boot/**/*.js',
     'src/loader/**/*.js',
     'src/menu/**/*.js',
+    // TODO: Исправить ошибку
+    // 'src/game/triangle.js'
+    // 'src/game/game.js'
+    // TODO: Вынести triangle в отдельную папку
     'src/game/**/*.js',
     'src/scoreboard/**/*.js',
     'src/app.js'
