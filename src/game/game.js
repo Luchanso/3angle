@@ -1,10 +1,10 @@
 class Game extends Phaser.State {
   constructor() {
-    super()
+    super();
   }
 
   create() {
-    
+    this.game.stage.backgroundColor = '#311B92';
   }
 
   render() {
