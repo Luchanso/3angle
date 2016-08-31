@@ -1,12 +1,14 @@
-var gulp = require('gulp'),
-  concat = require('gulp-concat'),
-  uglify = require('gulp-uglify'),
-  watch = require('gulp-watch'),
-  sourcemaps = require('gulp-sourcemaps'),
-  babel = require("gulp-babel"),
-  connect = require('gulp-connect');
+'use strict'
 
-gulp.task('connect', function() {
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const watch = require('gulp-watch');
+const sourcemaps = require('gulp-sourcemaps');
+const babel = require("gulp-babel");
+const connect = require('gulp-connect');
+
+gulp.task('connect', () => {
   connect.server({
     port: 8080,
     livereload: true,
@@ -14,20 +16,20 @@ gulp.task('connect', function() {
   });
 });
 
-gulp.task('content', function() {
+gulp.task('content', () => {
   gulp.src('assets/**/*')
     .pipe(gulp.dest('public/assets/'))
     .pipe(connect.reload());
 });
 
-gulp.task('html', function() {
+gulp.task('html', () => {
   gulp.src('pages/**/*.html')
     .pipe(gulp.dest('public'))
     .pipe(connect.reload());
 });
 
-gulp.task('js', function() {
-  var src = [
+gulp.task('js', () => {
+  const src = [
     'src/engine.js',
     'src/boot/**/*.js',
     'src/loader/**/*.js',
@@ -39,14 +41,14 @@ gulp.task('js', function() {
 
   gulp.src(src)
     .pipe(sourcemaps.init())
-    .on('error', function(err) {
+    .on('error', err => {
       console.error('Error in compress task', err.toString());
     })
     .pipe(concat('app.js'))
     .pipe(babel({
       "presets": ["es2015"]
     }))
-    .on('error', function(err) {
+    .on('error', err => {
       console.error('Error in babel task', err.toString());
     })
     .pipe(sourcemaps.write())
@@ -54,14 +56,14 @@ gulp.task('js', function() {
     .pipe(connect.reload());
 });
 
-gulp.task('watch', function() {
-  watch('src/**/*.js', function() {
+gulp.task('watch', () => {
+  watch('src/**/*.js', () => {
     gulp.start('js');
   });
-  watch('pages/**/*.html', function() {
+  watch('pages/**/*.html', () => {
     gulp.start('html');
   });
-  watch('assets/**/*', function() {
+  watch('assets/**/*', () => {
     gulp.start('content');
   });
 });
