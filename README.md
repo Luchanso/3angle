@@ -13,7 +13,7 @@ This is three in row game (now its only prototype) for android/ios/social and ot
 >
 > ~African proverb.
 
-![img](https://cloud.githubusercontent.com/assets/2098777/18150825/7e5a1964-6ff2-11e6-934c-75d82246bc66.png)
+![screen](https://cloud.githubusercontent.com/assets/2098777/18176542/b4b86fe2-707e-11e6-9fc5-c3ea6f4ab812.png)
 
 ## <a name="install"></a>Install and usage
 
