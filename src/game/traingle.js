@@ -9,6 +9,13 @@ class Triangle extends Phaser.Sprite {
     if (isRotated) {
       this.rotation = Math.PI;
     }
+
+    this.inputEnabled = true;
+    this.events.onInputOver.add(this.destroy, this);
+  }
+
+  destroy() {
+    this.game.add.tween(this).to({alpha: 0}, 1000).start();
   }
 }
 
