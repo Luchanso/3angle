@@ -34,13 +34,11 @@ gulp.task('js', () => {
     'src/boot/**/*.js',
     'src/loader/**/*.js',
     'src/menu/**/*.js',
-    // TODO: Исправить ошибку
-    // 'src/game/triangle.js'
-    // 'src/game/game.js'
-    // TODO: Вынести triangle в отдельную папку
-    'src/game/**/*.js',
+    'src/game/color.js',
+    'src/game/triangle.js',
+    'src/game/game.js',
     'src/scoreboard/**/*.js',
-    'src/app.js'
+    'src/app.js',
   ];
 
   gulp.src(src)
@@ -48,13 +46,13 @@ gulp.task('js', () => {
     .on('error', err => {
       console.error('Error in compress task', err.toString());
     })
-    .pipe(concat('app.js'))
     .pipe(babel({
       "presets": ["es2015"]
     }))
     .on('error', err => {
       console.error('Error in babel task', err.toString());
     })
+    .pipe(concat('app.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('public'))
     .pipe(connect.reload());
