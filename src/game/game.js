@@ -4,14 +4,14 @@ class Game extends Phaser.State {
   }
 
   create() {
-    this.game.stage.backgroundColor = '#000';
+    this.game.stage.backgroundColor = '#FFF';
 
     this.sketch();
   }
 
   render() {
-    this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), '#90CAF9');
-    this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), '#90CAF9');
+    // this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), '#90CAF9');
+    // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), '#90CAF9');
   }
 
   sketch() {
@@ -20,8 +20,8 @@ class Game extends Phaser.State {
 
     for (let x = 0; x < 25; x++) {
       for (let y = 0; y < 9; y++) {
-        let posX = margin + x * (Engine.Triangle.size / 2 + padding);
-        let posY = margin + y * (Engine.Triangle.size + padding);
+        let posX = margin + x * (Engine.Triangle.size / 2 + padding - 1);
+        let posY = margin + y * (Engine.Triangle.size + padding - 1);
         let isRotated = x % 2 === 1;
 
         if (y % 2 === 1) {
@@ -42,9 +42,10 @@ class Game extends Phaser.State {
         this.game.add.existing(triangle);
 
         triangle.tint = this.game.rnd.pick([
-          0x4CAF50,
-          0x03A9F4,
           0x3F51B5,
+          0x3949AB,
+          0x303F9F,
+          0x283593
         ]);
       }
     }
