@@ -6,7 +6,7 @@
 
 ## <a name="about"></a>About
 
-This three in row game (now its only prototype) for android/ios/social and other platforms. Engine: phaser.io (js). If you Designer or Game Developer or you want help me with other things, then just write to me via [issue](https://github.com/Luchanso/3angle/issues) or email oleg@loutchansky.com
+This is three in row game (now its only prototype) for android/ios/social and other platforms. Engine: phaser.io (js). If you Designer or Game Developer or you want help me with other things, then just write to me via [issue](https://github.com/Luchanso/3angle/issues) or email oleg@loutchansky.com
 
 > If you want to go quickly, go alone.<br>
 > If you want to go far, go together.
