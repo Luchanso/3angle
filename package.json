@@ -20,6 +20,7 @@
   },
   "homepage": "https://gitlab.com/Luchanso/3angle#README",
   "dependencies": {
+    "ava": "^0.16.0",
     "babel-preset-es2015": "^6.14.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
