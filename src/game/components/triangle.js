@@ -19,23 +19,42 @@ class Triangle extends Phaser.Sprite {
 
     this.inputEnabled = true;
     this.input.pixelPerfectOver = true;
+    this.input.pixelPerfectClick = true;
     this.events.onInputOver.add(this.delete, this);
+    this.events.onInputDown.add(this.delete, this);
+
+    this.events.triangleDelete = new Phaser.Signal();
 
     if (isRotated) {
       this.rotation = Math.PI;
     }
+
+    this.game.add.existing(this);
   }
 
   delete() {
-    this.game.add.tween(this)
-      .to({
-        alpha: 0
-      })
-      .start();
+    if (this.game.input.activePointer.isDown) {
+      this.game.add.tween(this)
+        .to({
+          alpha: 0
+        })
+        .start()
+        .onComplete
+        .add(() => {
+          this.events.triangleDelete.dispatch(this);
+        }, this);
+    }
   }
 
-  recovery(color) {
+  recover(colorSet) {
+    this.colorSet = colorSet;
+    this.tint = this.colorSet.getRandomColor();
 
+    this.game.add.tween(this)
+      .to({
+        alpha: 1
+      }, 1000, Phaser.Easing.Bounce.Out)
+      .start();
   }
 }
 
