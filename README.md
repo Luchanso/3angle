@@ -2,7 +2,7 @@
 
 * [About](#about)
 * [Install and usage](#install)
-* [Task List](#tasklist)
+* [Task List](https://github.com/Luchanso/3angle/issues/1)
 
 ## <a name="about"></a>About
 
@@ -31,6 +31,3 @@ gulp
 ```
 
 open: http://127.0.0.1:8080
-
-## <a name="tasklist"></a>Task List
-* [ ] Add prototype game
