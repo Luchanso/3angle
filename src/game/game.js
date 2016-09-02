@@ -1,8 +1,11 @@
 class Game extends Phaser.State {
-  constructor(game, numberOfGradation) {
+  constructor() {
     super();
+  }
+
+  init(numberOfGradation) {
     /**
-     * Number of gradations will use in this game level
+     * Number of colorSets will use in this game level
      * @type {[type]}
      */
     this.numberOfGradation = numberOfGradation;
@@ -23,12 +26,13 @@ class Game extends Phaser.State {
   }
 
   createGradations() {
-    this.gradations = [];
+    this.colorSets = [];
 
-    let allGradation = Phaser.ArrayUtils.shuffle(Color.GRADATIONS);
+    let allGradation = Phaser.ArrayUtils.shuffle(ColorSet.GRADATIONS);
 
     for (let i = 0; i < this.numberOfGradation; i++) {
-      this.gradations.push(new Color(allGradation[i]));
+      let colorSet = new ColorSet(allGradation[i]);
+      this.colorSets.push(colorSet);
     }
   }
 
@@ -51,7 +55,7 @@ class Game extends Phaser.State {
           posX,
           posY,
           isRotated,
-          this.game.rnd.pick(this.gradations)
+          this.game.rnd.pick(this.colorSets)
         );
 
         this.game.add.existing(triangle);

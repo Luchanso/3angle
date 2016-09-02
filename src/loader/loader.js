@@ -9,12 +9,10 @@ class Loader extends Phaser.State {
     this.load.onFileComplete.add(this.refreshProgress, this);
 
     this.generateTriangle();
-
-    this.load.json('colors', 'assets/data/colors.json');
   }
 
   create() {
-    let numberOfGradation = 5;
+    let numberOfGradation = 3;
     this.state.start('Game', true, false, numberOfGradation);
   }
 

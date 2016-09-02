@@ -1,4 +1,4 @@
-Engine.game = new Phaser.Game(Engine.maxWidth, Engine.maxHeight, Phaser.WEBGL);
+Engine.game = new Phaser.Game(Engine.maxWidth, Engine.maxHeight, Phaser.AUTO);
 
 Engine.game.state.add('Boot', Engine.Boot);
 Engine.game.state.add('Loader', Engine.Loader);
