@@ -18,6 +18,7 @@ class Game extends Phaser.State {
     this.margin = 32;
 
     this.trianglesMatrix = [];
+    this.selectedTriangles = [];
   }
 
   create() {
@@ -63,10 +64,13 @@ class Game extends Phaser.State {
           posX,
           posY,
           isRotated,
-          this.game.rnd.pick(this.colorSets)
+          this.game.rnd.pick(this.colorSets),
+          { x, y }
         );
 
-        triangle.events.triangleDelete.add(this.recoverTriangle, this);
+        triangle.events.onInputOver.add(this.selectTriangle, this);
+        triangle.events.onInputDown.add(this.selectTriangle, this);
+        triangle.events.deleteComplete.add(this.recoverTriangle, this);
 
         this.trianglesMatrix[x][y] = triangle;
       }
@@ -75,6 +79,46 @@ class Game extends Phaser.State {
 
   recoverTriangle(triangle) {
     triangle.recover(this.game.rnd.pick(this.colorSets));
+  }
+
+  selectTriangle(triangle, point) {
+    if (!this.game.input.activePointer.isDown) {
+      return;
+    }
+
+    if (this.selectedTriangles.length === 0) {
+      triangle.select();
+      this.selectedTriangles.push(triangle);
+    } else {
+      let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
+
+      console.log(lastSelectedTriangle.matrixPos, 'last', lastSelectedTriangle.isRotated);
+      console.log(triangle.matrixPos, 'now', triangle.isRotated);
+
+      if (this.checkTriangleLink(lastSelectedTriangle, triangle)) {
+        triangle.select();
+        this.selectedTriangles.push(triangle);
+      }
+    }
+  }
+
+  /**
+   * Check triangles link
+   */
+  checkTriangleLink(tr1, tr2) {
+    if (tr1.matrixPos.y === tr2.matrixPos.y ) {
+      if (tr1.matrixPos.x + 1 === tr2.matrixPos.x ||
+          tr1.matrixPos.x - 1 === tr2.matrixPos.x) {
+            return true;
+      }
+    } else if (tr1.matrixPos.x === tr2.matrixPos.x) {
+      // TODO: HERE
+      // if (tr1.isRotated !== tr2.isRotated && tr1.matrixPos.x % 2 === 0) {
+      //   return true;
+      // }
+    }
+
+    return false;
   }
 }
 
