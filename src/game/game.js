@@ -9,6 +9,14 @@ class Game extends Phaser.State {
      * @type {[type]}
      */
     this.numberOfGradation = numberOfGradation;
+
+    /**
+     * Margin of triangles matrix
+     * @type {Number}
+     */
+    this.margin = 32;
+
+    this.trianglesMatrix = [];
   }
 
   create() {
@@ -36,14 +44,17 @@ class Game extends Phaser.State {
     }
   }
 
+  /**
+   * Create triangles on canvas
+   */
   sketch() {
-    const margin = 32;
     const padding = 0;
 
     for (let x = 0; x < 25; x++) {
+      this.trianglesMatrix[x] = [];
       for (let y = 0; y < 9; y++) {
-        let posX = margin + x * (Engine.Triangle.size / 2 + padding - 1);
-        let posY = margin + y * (Engine.Triangle.size + padding - 1);
+        let posX = this.margin + x * (Engine.Triangle.size / 2 + padding - 1);
+        let posY = this.margin + y * (Engine.Triangle.size + padding - 1);
         let isRotated = x % 2 === 1;
 
         if (y % 2 === 1) {
@@ -59,6 +70,8 @@ class Game extends Phaser.State {
         );
 
         this.game.add.existing(triangle);
+
+        this.trianglesMatrix[x][y] = triangle;
       }
     }
   }

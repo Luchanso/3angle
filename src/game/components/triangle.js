@@ -17,12 +17,13 @@ class Triangle extends Phaser.Sprite {
     this.colorSet = colorSet;
     this.tint = this.colorSet.getRandomColor();
 
+    this.inputEnabled = true;
+    this.input.pixelPerfectOver = true;
+    this.events.onInputOver.add(this.delete, this);
+
     if (isRotated) {
       this.rotation = Math.PI;
     }
-
-    this.inputEnabled = true;
-    this.events.onInputOver.add(this.delete, this);
   }
 
   delete() {
