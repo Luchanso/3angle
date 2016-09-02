@@ -1,14 +1,22 @@
-class Color {
+class ColorSet {
+  /**
+   * Color Set
+   * @param  {Array} gradition Array of colors
+   */
   constructor(gradition) {
     this.gradition = gradition;
   }
 
+  /**
+   * Get random color from set
+   * @return {[type]} [description]
+   */
   getRandomColor() {
     return Engine.game.rnd.pick(this.gradition);
   }
 }
 
-Color.COLORS = [
+ColorSet.GRADATIONS = [
   // indigo
   [
     0x3F51B5,
@@ -67,4 +75,4 @@ Color.COLORS = [
   ],
 ];
 
-Engine.Color = Color;
+Engine.ColorSet = ColorSet;

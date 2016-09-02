@@ -34,9 +34,10 @@ gulp.task('js', () => {
     'src/boot/**/*.js',
     'src/loader/**/*.js',
     'src/menu/**/*.js',
-    'src/game/color.js',
-    'src/game/triangle.js',
+
+    'src/game/components/**/*.js',
     'src/game/game.js',
+
     'src/scoreboard/**/*.js',
     'src/app.js',
   ];

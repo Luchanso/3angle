@@ -8,14 +8,14 @@ class Triangle extends Phaser.Sprite {
    * @param  {Boolean} isRotated [description]
    * @param  {Number}  color     [description]
    */
-  constructor(game, x, y, isRotated, gradation) {
+  constructor(game, x, y, isRotated, colorSet) {
     super(game, x, y, Engine.game.cache.getBitmapData(Engine.keys.triangle));
 
     this.width = Triangle.size;
     this.height = Triangle.size;
     this.anchor.setTo(0.5);
-    this.gradition = gradation;
-    this.tint = this.gradition.getRandomColor();
+    this.colorSet = colorSet;
+    this.tint = this.colorSet.getRandomColor();
 
     if (isRotated) {
       this.rotation = Math.PI;
@@ -26,7 +26,11 @@ class Triangle extends Phaser.Sprite {
   }
 
   delete() {
-
+    this.game.add.tween(this)
+      .to({
+        alpha: 0
+      })
+      .start();
   }
 
   recovery(color) {
