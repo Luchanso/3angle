@@ -4,6 +4,7 @@ class Game extends Phaser.State {
   }
 
   init(numberOfGradation) {
+    this.colorSets = [];
     /**
      * Number of colorSets will use in this game level
      * @type {[type]}
@@ -34,8 +35,6 @@ class Game extends Phaser.State {
   }
 
   createGradations() {
-    this.colorSets = [];
-
     let allGradation = Phaser.ArrayUtils.shuffle(ColorSet.GRADATIONS);
 
     for (let i = 0; i < this.numberOfGradation; i++) {
@@ -48,13 +47,11 @@ class Game extends Phaser.State {
    * Create triangles on canvas
    */
   sketch() {
-    const padding = 0;
-
     for (let x = 0; x < 25; x++) {
       this.trianglesMatrix[x] = [];
       for (let y = 0; y < 9; y++) {
-        let posX = this.margin + x * (Engine.Triangle.size / 2 + padding - 1);
-        let posY = this.margin + y * (Engine.Triangle.size + padding - 1);
+        let posX = this.margin + x * (Engine.Triangle.size / 2 - 1);
+        let posY = this.margin + y * (Engine.Triangle.size - 1);
         let isRotated = x % 2 === 1;
 
         if (y % 2 === 1) {
@@ -69,11 +66,15 @@ class Game extends Phaser.State {
           this.game.rnd.pick(this.colorSets)
         );
 
-        this.game.add.existing(triangle);
+        triangle.events.triangleDelete.add(this.recoverTriangle, this);
 
         this.trianglesMatrix[x][y] = triangle;
       }
     }
+  }
+
+  recoverTriangle(triangle) {
+    triangle.recover(this.game.rnd.pick(this.colorSets));
   }
 }
 
