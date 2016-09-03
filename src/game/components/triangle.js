@@ -96,8 +96,10 @@ class Triangle extends Phaser.Sprite {
     if (this.game.input.activePointer.isDown) {
       this.game.add.tween(this)
         .to({
+          width: 0,
+          height: 0,
           alpha: 0
-        })
+        }, Triangle.animationTime)
         .start()
         .onComplete
         .add(() => {
@@ -109,6 +111,9 @@ class Triangle extends Phaser.Sprite {
   recover(colorSet) {
     this.colorSet = colorSet;
     this.tint = this.colorSet.getRandomColor();
+    this.width = Triangle.size;
+    this.height = Triangle.size;
+    this.selected = false;
 
     this.game.add.tween(this)
       .to({
@@ -119,5 +124,5 @@ class Triangle extends Phaser.Sprite {
 }
 
 Triangle.size = 71;
-Triangle.animationTime = 250;
+Triangle.animationTime = 200;
 Engine.Triangle = Triangle;

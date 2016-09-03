@@ -99,6 +99,11 @@ class Game extends Phaser.State {
         let triangle = this.selectedTriangles.pop();
         triangle.unselect();
       }
+    } else {
+      while (this.selectedTriangles.length > 0) {
+        let triangle = this.selectedTriangles.pop();
+        triangle.delete();
+      }
     }
   }
 
