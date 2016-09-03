@@ -31,8 +31,6 @@ class Game extends Phaser.State {
 
   render() {
     // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
-    // this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), '#90CAF9');
-    // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), '#90CAF9');
   }
 
   createGradations() {
@@ -92,9 +90,6 @@ class Game extends Phaser.State {
     } else {
       let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
 
-      console.log(lastSelectedTriangle.matrixPos, 'last', lastSelectedTriangle.isRotated);
-      console.log(triangle.matrixPos, 'now', triangle.isRotated);
-
       if (this.checkTriangleLink(lastSelectedTriangle, triangle)) {
         triangle.select();
         this.selectedTriangles.push(triangle);
@@ -112,10 +107,19 @@ class Game extends Phaser.State {
             return true;
       }
     } else if (tr1.matrixPos.x === tr2.matrixPos.x) {
-      // TODO: HERE
-      // if (tr1.isRotated !== tr2.isRotated && tr1.matrixPos.x % 2 === 0) {
-      //   return true;
-      // }
+      if (tr1.matrixPos.x % 2 === 0) {
+        if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y  - 1) {
+          return true;
+        } else if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y + 1) {
+          return true;
+        }
+      } else {
+        if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y  + 1) {
+          return true;
+        } else if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y - 1) {
+          return true;
+        }
+      }
     }
 
     return false;
