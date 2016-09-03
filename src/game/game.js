@@ -33,7 +33,7 @@ class Game extends Phaser.State {
     this.createGradations();
 
     this.sketch();
-    this.initEvents();
+    this.initEvents();    
   }
 
   render() {
@@ -126,7 +126,11 @@ class Game extends Phaser.State {
       if (triangle.selected && triangle === preLastSelectedTriangle) {
         lastSelectedTriangle.unselect();
         this.selectedTriangles.pop();
-      } else if (!triangle.selected && this.checkTriangleLink(lastSelectedTriangle, triangle)) {
+      } else if (
+        !triangle.selected &&
+        this.checkTriangleLink(lastSelectedTriangle, triangle) &&
+        lastSelectedTriangle.colorSet === triangle.colorSet
+      ) {
           triangle.select();
           this.selectedTriangles.push(triangle);
       }
