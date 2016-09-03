@@ -17,6 +17,12 @@ class Game extends Phaser.State {
      */
     this.margin = 64;
 
+    /**
+     * Minimal triangles destroy length
+     * @type {Number}
+     */
+    this.minTrianglesDestroy = 3;
+
     this.trianglesMatrix = [];
     this.selectedTriangles = [];
   }
@@ -27,6 +33,7 @@ class Game extends Phaser.State {
     this.createGradations();
 
     this.sketch();
+    this.initEvents();
   }
 
   render() {
@@ -40,6 +47,13 @@ class Game extends Phaser.State {
       let colorSet = new ColorSet(allGradation[i]);
       this.colorSets.push(colorSet);
     }
+  }
+
+  /**
+   * Initialization event in the game
+   */
+  initEvents() {
+    this.game.input.onUp.add(this.destroyTriangle, this);
   }
 
   /**
@@ -76,6 +90,18 @@ class Game extends Phaser.State {
     }
   }
 
+  /**
+   * Destroy or unselect triangles
+   */
+  destroyTriangle() {
+    if (this.selectedTriangles.length < this.minTrianglesDestroy) {
+      while (this.selectedTriangles.length > 0) {
+        let triangle = this.selectedTriangles.pop();
+        triangle.unselect();
+      }
+    }
+  }
+
   recoverTriangle(triangle) {
     triangle.recover(this.game.rnd.pick(this.colorSets));
   }
@@ -90,11 +116,10 @@ class Game extends Phaser.State {
       this.selectedTriangles.push(triangle);
     } else {
       let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
+      let preLastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 2];
 
-
-      // TODO: Don't work unselected
-      if (triangle.selected && triangle === lastSelectedTriangle) {
-        triangle.unselect();
+      if (triangle.selected && triangle === preLastSelectedTriangle) {
+        lastSelectedTriangle.unselect();
         this.selectedTriangles.pop();
       } else if (!triangle.selected && this.checkTriangleLink(lastSelectedTriangle, triangle)) {
           triangle.select();
