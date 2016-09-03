@@ -52,13 +52,13 @@ ColorSet.GRADATIONS = [
     0x5D4037,
     0x4E342E,
   ],
-  // deeporange
-  [
-    0xFF5722,
-    0xF4511E,
-    0xE64A19,
-    0xD84315,
-  ],
+  // // deeporange
+  // [
+  //   0xFF5722,
+  //   0xF4511E,
+  //   0xE64A19,
+  //   0xD84315,
+  // ],
   // grey
   [
     0x9E9E9E,
