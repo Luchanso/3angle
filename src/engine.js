@@ -1,8 +1,8 @@
 let Engine = {
   minWidth: 640,
   minHeight: 320,
-  maxWidth: 825,
-  maxHeight: 580,
+  maxWidth: 1024,
+  maxHeight: 640,
 };
 
 /**
