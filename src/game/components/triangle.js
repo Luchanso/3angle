@@ -36,7 +36,7 @@ class Triangle extends Phaser.Sprite {
       this.rotation = Math.PI;
     }
 
-    this.addTextPosition();
+    // this.addTextPosition();
 
     this.game.add.existing(this);
   }
@@ -72,21 +72,22 @@ class Triangle extends Phaser.Sprite {
         .to({
           width: Triangle.size / 1.5,
           height: Triangle.size / 1.5
-        }, 250)
+        }, Triangle.animationTime)
         .start();
       }
   }
 
   unselect() {
-    // BUG: Need stop all tweens
     if (this.selected) {
+
+      this.game.tweens.remove(this);
       this.selected = false;
 
       this.game.add.tween(this)
         .to({
           width: Triangle.size,
           height: Triangle.size
-        }, 250)
+        }, Triangle.animationTime)
         .start();
       }
   }
@@ -117,5 +118,6 @@ class Triangle extends Phaser.Sprite {
   }
 }
 
-Triangle.size = 65;
+Triangle.size = 71;
+Triangle.animationTime = 250;
 Engine.Triangle = Triangle;
