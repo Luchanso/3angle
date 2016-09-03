@@ -12,10 +12,16 @@ class Game extends Phaser.State {
     this.numberOfGradation = numberOfGradation;
 
     /**
-     * Margin of triangles matrix
+     * MarginTop of triangles matrix
      * @type {Number}
      */
-    this.margin = 64;
+    this.marginTop = 100;
+
+    /**
+     * MarginLeft of triangles matrix
+     * @type {Number}
+     */
+    this.marginLeft = 64;
 
     /**
      * Minimal triangles destroy length
@@ -25,6 +31,8 @@ class Game extends Phaser.State {
 
     this.trianglesMatrix = [];
     this.selectedTriangles = [];
+
+    this.score = 0;
   }
 
   create() {
@@ -33,7 +41,8 @@ class Game extends Phaser.State {
     this.createGradations();
 
     this.sketch();
-    this.initEvents();    
+    this.initEvents();
+    this.createScoreLable();
   }
 
   render() {
@@ -63,8 +72,8 @@ class Game extends Phaser.State {
     for (let x = 0; x < 27; x++) {
       this.trianglesMatrix[x] = [];
       for (let y = 0; y < 9; y++) {
-        let posX = this.margin + x * (Engine.Triangle.size / 2 - 1);
-        let posY = this.margin + y * (Engine.Triangle.size - 1);
+        let posX = this.marginLeft + x * (Engine.Triangle.size / 2 - 1);
+        let posY = this.marginTop + y * (Engine.Triangle.size - 1);
         let isRotated = x % 2 === 1;
 
         if (y % 2 === 1) {
@@ -100,6 +109,8 @@ class Game extends Phaser.State {
         triangle.unselect();
       }
     } else {
+      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+
       while (this.selectedTriangles.length > 0) {
         let triangle = this.selectedTriangles.pop();
         triangle.delete();
@@ -163,6 +174,40 @@ class Game extends Phaser.State {
     }
 
     return false;
+  }
+
+  /**
+   * Add score on stage
+   */
+  createScoreLable() {
+    const randomColorSet = this.game.rnd.pick(this.colorSets);
+    const color = '#fff'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
+    const marginRight = 25;
+    const marginTop = 15;
+
+    const style = {
+      font: '42px Open Sans',
+      fontStyle: 'italic',
+      fill: color
+    }
+
+    this.scoreLable = new Engine.ScoreLable(
+      this.game,
+      this.game.width - marginRight,
+      marginTop,
+      0,
+      style
+    );
+    this.scoreLable.anchor.setTo(1, 0);
+  }
+
+  updateScore(val) {
+    val = Math.round(val);
+
+    this.score += val;
+    this.scoreLable.changeValue(this.score);
+
+    console.log(this.score);
   }
 }
 
