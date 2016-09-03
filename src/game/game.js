@@ -15,7 +15,7 @@ class Game extends Phaser.State {
      * Margin of triangles matrix
      * @type {Number}
      */
-    this.margin = 32;
+    this.margin = 64;
 
     this.trianglesMatrix = [];
     this.selectedTriangles = [];
@@ -46,7 +46,7 @@ class Game extends Phaser.State {
    * Create triangles on canvas
    */
   sketch() {
-    for (let x = 0; x < 25; x++) {
+    for (let x = 0; x < 27; x++) {
       this.trianglesMatrix[x] = [];
       for (let y = 0; y < 9; y++) {
         let posX = this.margin + x * (Engine.Triangle.size / 2 - 1);
@@ -68,6 +68,7 @@ class Game extends Phaser.State {
 
         triangle.events.onInputOver.add(this.selectTriangle, this);
         triangle.events.onInputDown.add(this.selectTriangle, this);
+        // triangle.events.onInputOut.add(this.selectTriangle, this);
         triangle.events.deleteComplete.add(this.recoverTriangle, this);
 
         this.trianglesMatrix[x][y] = triangle;
@@ -90,9 +91,14 @@ class Game extends Phaser.State {
     } else {
       let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
 
-      if (this.checkTriangleLink(lastSelectedTriangle, triangle)) {
-        triangle.select();
-        this.selectedTriangles.push(triangle);
+
+      // TODO: Don't work unselected
+      if (triangle.selected && triangle === lastSelectedTriangle) {
+        triangle.unselect();
+        this.selectedTriangles.pop();
+      } else if (!triangle.selected && this.checkTriangleLink(lastSelectedTriangle, triangle)) {
+          triangle.select();
+          this.selectedTriangles.push(triangle);
       }
     }
   }
