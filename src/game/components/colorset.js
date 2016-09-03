@@ -14,6 +14,17 @@ class ColorSet {
   getRandomColor() {
     return Engine.game.rnd.pick(this.gradition);
   }
+
+  /**
+   * Get color by number
+   */
+  getByNumber(number) {
+    return this.gradition[number];
+  }
+
+  getLastColor() {
+    return this.gradition[this.gradition.length - 1];
+  }
 }
 
 ColorSet.GRADATIONS = [
@@ -66,13 +77,13 @@ ColorSet.GRADATIONS = [
     0x616161,
     0x424242,
   ],
-  // red
-  [
-    0xF44336,
-    0xE53935,
-    0xD32F2F,
-    0xC62828,
-  ],
+  // // red
+  // [
+  //   0xF44336,
+  //   0xE53935,
+  //   0xD32F2F,
+  //   0xC62828,
+  // ],
 ];
 
 Engine.ColorSet = ColorSet;
