@@ -27,9 +27,6 @@ class Triangle extends Phaser.Sprite {
     this.input.pixelPerfectOver = true;
     this.input.pixelPerfectClick = true;
 
-    // this.events.onInputOver.add(this.select, this);
-    // this.events.onInputDown.add(this.select, this);
-
     this.events.deleteComplete = new Phaser.Signal();
 
     this.selected = false;
@@ -39,7 +36,32 @@ class Triangle extends Phaser.Sprite {
       this.rotation = Math.PI;
     }
 
+    this.addTextPosition();
+
     this.game.add.existing(this);
+  }
+
+  addTextPosition() {
+    let text = new Phaser.Text(
+      this.game,
+      Triangle.size / 2,
+      Triangle.size / 2,
+      `${this.matrixPos.x}:${this.matrixPos.y}`,
+      {
+        font: '64px Open Sans',
+        fill: 'black'
+      }
+    )
+
+    if (this.isRotated) {
+      text.rotation += Math.PI;
+      text.y = +text.height;
+    } else {
+      text.x = -text.width / 2;
+      text.y = -text.height / 4;
+    }
+
+    this.addChild(text);
   }
 
   select() {
