@@ -4,9 +4,10 @@ class Loader extends Phaser.State {
   }
 
   preload() {
+    this.game.stage.backgroundColor = '#000';
     this.addProgressLable();
 
-    this.load.onFileComplete.add(this.refreshProgress, this);
+    this.load.onFileComplete.add(this.refreshProgress, this);    
 
     this.generateTriangle();
   }
