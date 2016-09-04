@@ -37,8 +37,6 @@ class Triangle extends Phaser.Sprite {
     }
 
     // this.addTextPosition();
-
-    this.game.add.existing(this);
   }
 
   addTextPosition() {
