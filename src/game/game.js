@@ -33,10 +33,15 @@ class Game extends Phaser.State {
     this.selectedTriangles = [];
 
     this.score = 0;
+
+    this.triangleMatrixWidth = 27;
+    this.triangleMatrixHeight = 9;
   }
 
   create() {
     this.game.stage.backgroundColor = '#000';
+
+    this.triangleGroup = this.game.add.group();
 
     this.createGradations();
 
@@ -46,7 +51,10 @@ class Game extends Phaser.State {
   }
 
   render() {
+    // this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), 'rgba(255, 255, 255, 0.2)');
+    // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), 'rgba(255, 255, 255, 0.2)');
     // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
+    // this.game.debug.geom(this.triangleGroup.getBounds(), 'rgba(37, 43, 189, 0.5)');
   }
 
   createGradations() {
@@ -69,11 +77,11 @@ class Game extends Phaser.State {
    * Create triangles on canvas
    */
   sketch() {
-    for (let x = 0; x < 27; x++) {
+    for (let x = 0; x < this.triangleMatrixWidth; x++) {
       this.trianglesMatrix[x] = [];
-      for (let y = 0; y < 9; y++) {
-        let posX = this.marginLeft + x * (Engine.Triangle.size / 2 - 1);
-        let posY = this.marginTop + y * (Engine.Triangle.size - 1);
+      for (let y = 0; y < this.triangleMatrixHeight; y++) {
+        let posX = x * (Engine.Triangle.size / 2 - 1);
+        let posY = y * (Engine.Triangle.size - 1);
         let isRotated = x % 2 === 1;
 
         if (y % 2 === 1) {
@@ -91,12 +99,15 @@ class Game extends Phaser.State {
 
         triangle.events.onInputOver.add(this.selectTriangle, this);
         triangle.events.onInputDown.add(this.selectTriangle, this);
-        // triangle.events.onInputOut.add(this.selectTriangle, this);
         triangle.events.deleteComplete.add(this.recoverTriangle, this);
 
         this.trianglesMatrix[x][y] = triangle;
+        this.triangleGroup.add(triangle);
       }
     }
+
+    this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + Engine.Triangle.size / 2;
+    this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + Engine.Triangle.size / 2;
   }
 
   /**
@@ -199,6 +210,19 @@ class Game extends Phaser.State {
       style
     );
     this.scoreLable.anchor.setTo(1, 0);
+
+    // TODO: TEMP
+    this.scoreLable.inputEnabled = true;
+    this.scoreLable.events.onInputDown.add(() => {
+      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
+      if (this.game.scale.isFullScreen) {
+        this.game.scale.stopFullScreen();
+      } else {
+        this.game.scale.startFullScreen();
+        window.test = this;
+      }
+
+    }, this);
   }
 
   updateScore(val) {
@@ -206,8 +230,6 @@ class Game extends Phaser.State {
 
     this.score += val;
     this.scoreLable.changeValue(this.score);
-
-    console.log(this.score);
   }
 }
 
