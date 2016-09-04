@@ -1,12 +1,31 @@
 'use strict'
 
+console.log('i am run...');
+var time = Date.now();
+var startTime = Date.now();
+
 const gulp = require('gulp');
+checkTime('gulp');
+
 const concat = require('gulp-concat');
+checkTime('gulp-concat');
+
 const uglify = require('gulp-uglify');
+checkTime('gulp-uglify');
+
 const watch = require('gulp-watch');
+checkTime('gulp-watch');
+
 const sourcemaps = require('gulp-sourcemaps');
+checkTime('gulp-sourcemaps');
+
 const babel = require("gulp-babel");
+checkTime('gulp-babel');
+
 const connect = require('gulp-connect');
+checkTime('gulp-connect');
+
+getSummaryTime();
 
 gulp.task('connect', () => {
   connect.server({
@@ -54,7 +73,7 @@ gulp.task('js', () => {
       console.error('Error in babel task', err.toString());
     })
     .pipe(concat('app.js'))
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())    
     .pipe(gulp.dest('public'))
     .pipe(connect.reload());
 });
@@ -72,3 +91,12 @@ gulp.task('watch', () => {
 });
 
 gulp.task('default', ['js', 'html', 'content', 'connect', 'watch']);
+
+function checkTime(name) {
+  console.log('[' + new Date().toLocaleTimeString() + ']', 'Run Time Module ' + name + ':', Date.now() - time, 'ms.');
+  time = Date.now();
+}
+
+function getSummaryTime() {
+  console.log('[' + new Date().toLocaleTimeString() + ']', 'Summary time:', Date.now() - startTime, 'ms.');
+}
