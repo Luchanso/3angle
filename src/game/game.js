@@ -251,8 +251,10 @@ class Game extends Phaser.State {
   }
 
   centeringMatrix() {
-    this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + Engine.Triangle.size / 2;
-    this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + Engine.Triangle.size / 2;
+    const halfTriangleSize = Engine.Triangle.size / 2;
+
+    this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + halfTriangleSize;
+    this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + halfTriangleSize;
   }
 }
 
