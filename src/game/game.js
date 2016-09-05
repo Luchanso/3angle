@@ -1,6 +1,8 @@
 class Game extends Phaser.State {
   constructor() {
     super();
+
+    window.gg = this;
   }
 
   init(numberOfGradation) {
@@ -48,6 +50,7 @@ class Game extends Phaser.State {
     this.sketch();
     this.initEvents();
     this.createScoreLable();
+    this.initializationFullScreen();
   }
 
   render() {
@@ -106,8 +109,7 @@ class Game extends Phaser.State {
       }
     }
 
-    this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + Engine.Triangle.size / 2;
-    this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + Engine.Triangle.size / 2;
+    this.centeringMatrix();
   }
 
   /**
@@ -193,7 +195,7 @@ class Game extends Phaser.State {
   createScoreLable() {
     const randomColorSet = this.game.rnd.pick(this.colorSets);
     const color = '#fff'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
-    const marginRight = 25;
+    const marginRight = 15;
     const marginTop = 15;
 
     const style = {
@@ -213,16 +215,21 @@ class Game extends Phaser.State {
 
     // TODO: TEMP
     this.scoreLable.inputEnabled = true;
-    this.scoreLable.events.onInputDown.add(() => {
-      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
-      if (this.game.scale.isFullScreen) {
-        this.game.scale.stopFullScreen();
-      } else {
-        this.game.scale.startFullScreen();
-        window.test = this;
-      }
+    this.scoreLable.events.onInputDown.add(this.toggleFullScreen, this);
+  }
 
-    }, this);
+  initializationFullScreen() {
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
+    this.game.scale.onFullScreenChange
+      .add(this.resizeScreen, this);
+  }
+
+  toggleFullScreen() {
+    if (this.game.scale.isFullScreen) {
+      this.game.scale.stopFullScreen();
+    } else {
+      this.game.scale.startFullScreen();
+    }
   }
 
   updateScore(val) {
@@ -230,6 +237,18 @@ class Game extends Phaser.State {
 
     this.score += val;
     this.scoreLable.changeValue(this.score);
+  }
+
+  resizeScreen() {
+    this.scoreLable.x = this.game.width - 15;
+    this.scoreLable.y = 15;
+
+    this.centeringMatrix();
+  }
+
+  centeringMatrix() {
+    this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + Engine.Triangle.size / 2;
+    this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + Engine.Triangle.size / 2;
   }
 }
 
