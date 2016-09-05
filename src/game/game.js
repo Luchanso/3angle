@@ -43,9 +43,10 @@ class Game extends Phaser.State {
   create() {
     this.game.stage.backgroundColor = '#000';
 
-    this.triangleGroup = this.game.add.group();
-
+    this.createUniverse();
     this.createGradations();
+
+    this.triangleGroup = this.game.add.group();
 
     this.sketch();
     this.initEvents();
@@ -60,6 +61,7 @@ class Game extends Phaser.State {
     // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), 'rgba(255, 255, 255, 0.2)');
     // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
     // this.game.debug.geom(this.triangleGroup.getBounds(), 'rgba(37, 43, 189, 0.5)');
+    this.universe.rotation += Math.PI / 1800 / 30;
   }
 
   createGradations() {
@@ -69,6 +71,14 @@ class Game extends Phaser.State {
       let colorSet = new ColorSet(allGradation[i]);
       this.colorSets.push(colorSet);
     }
+  }
+
+  createUniverse() {
+    this.universe = new Engine.Universe(this.game);
+
+    this.universe.create();
+
+    this.game.add.existing(this.universe);
   }
 
   /**
