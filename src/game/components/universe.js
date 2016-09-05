@@ -23,8 +23,6 @@ class Universe extends Phaser.Sprite {
         bitmap
       );
 
-      // debugger;
-
       this.addChild(sprite);
     }
   }

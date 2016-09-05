@@ -257,6 +257,9 @@ class Game extends Phaser.State {
     this.scoreLable.x = this.game.width - 15;
     this.scoreLable.y = 15;
 
+    this.universe.x = this.game.width / 2;
+    this.universe.y = this.game.height / 2;
+
     this.centeringMatrix();
   }
 
