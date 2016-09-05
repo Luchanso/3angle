@@ -43,6 +43,8 @@ class Game extends Phaser.State {
     this.sketch();
     this.initEvents();
     this.createScoreLable();
+
+    this.forcePortrait = true;
   }
 
   render() {
