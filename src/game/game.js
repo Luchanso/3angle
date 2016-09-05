@@ -51,6 +51,8 @@ class Game extends Phaser.State {
     this.initEvents();
     this.createScoreLable();
     this.initializationFullScreen();
+
+    this.forcePortrait = true;
   }
 
   render() {
