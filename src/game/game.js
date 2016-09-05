@@ -98,8 +98,10 @@ class Game extends Phaser.State {
           posX,
           posY,
           isRotated,
-          this.game.rnd.pick(this.colorSets),
-          { x, y }
+          this.game.rnd.pick(this.colorSets), {
+            x,
+            y
+          }
         );
 
         triangle.events.onInputOver.add(this.selectTriangle, this);
@@ -118,16 +120,17 @@ class Game extends Phaser.State {
    * Destroy or unselect triangles
    */
   destroyTriangle() {
-    if (this.selectedTriangles.length < this.minTrianglesDestroy) {
-      while (this.selectedTriangles.length > 0) {
-        let triangle = this.selectedTriangles.pop();
-        triangle.unselect();
-      }
-    } else {
-      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+    let isUnselect = this.selectedTriangles.length < this.minTrianglesDestroy;
 
-      while (this.selectedTriangles.length > 0) {
-        let triangle = this.selectedTriangles.pop();
+    if (!isUnselect) {
+      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+    }
+
+    while (this.selectedTriangles.length > 0) {
+      let triangle = this.selectedTriangles.pop();
+      if (isUnselect) {
+        triangle.unselect();
+      } else {
         triangle.delete();
       }
     }
@@ -152,13 +155,12 @@ class Game extends Phaser.State {
       if (triangle.selected && triangle === preLastSelectedTriangle) {
         lastSelectedTriangle.unselect();
         this.selectedTriangles.pop();
-      } else if (
-        !triangle.selected &&
-        this.checkTriangleLink(lastSelectedTriangle, triangle) &&
+      } else if (!triangle.selected &&
+        this.canTriangleLink(lastSelectedTriangle, triangle) &&
         lastSelectedTriangle.colorSet === triangle.colorSet
       ) {
-          triangle.select();
-          this.selectedTriangles.push(triangle);
+        triangle.select();
+        this.selectedTriangles.push(triangle);
       }
     }
   }
@@ -166,21 +168,21 @@ class Game extends Phaser.State {
   /**
    * Check triangles link
    */
-  checkTriangleLink(tr1, tr2) {
-    if (tr1.matrixPos.y === tr2.matrixPos.y ) {
+  canTriangleLink(tr1, tr2) {
+    if (tr1.matrixPos.y === tr2.matrixPos.y) {
       if (tr1.matrixPos.x + 1 === tr2.matrixPos.x ||
-          tr1.matrixPos.x - 1 === tr2.matrixPos.x) {
-            return true;
+        tr1.matrixPos.x - 1 === tr2.matrixPos.x) {
+        return true;
       }
     } else if (tr1.matrixPos.x === tr2.matrixPos.x) {
       if (tr1.matrixPos.x % 2 === 0) {
-        if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y  - 1) {
+        if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y - 1) {
           return true;
         } else if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y + 1) {
           return true;
         }
       } else {
-        if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y  + 1) {
+        if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y + 1) {
           return true;
         } else if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y - 1) {
           return true;

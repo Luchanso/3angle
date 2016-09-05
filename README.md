@@ -1,5 +1,8 @@
 # 3agnle
 
+[![Code Climate](https://codeclimate.com/github/Luchanso/3angle/badges/gpa.svg)](https://codeclimate.com/github/Luchanso/3angle) 
+[![Issue Count](https://codeclimate.com/github/Luchanso/3angle/badges/issue_count.svg)](https://codeclimate.com/github/Luchanso/3angle)
+
 * [About](#about)
 * [Install and usage](#install)
 * [Task List](https://github.com/Luchanso/3angle/issues/1)
