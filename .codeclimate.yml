@@ -1,13 +1,18 @@
-languages:
-  JavaScript: true
-exclude_paths:
-- "gulpfile.js"
+---
 engines:
-  # ... CONFIG CONTENT ...
   eslint:
     enabled: true
-    # ... CONFIG CONTENT ...
     checks:
       comma-dangle:
         enabled: false
-# ... CONFIG CONTENT ...
+ratings:
+  paths:
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+  - "**.rb"
+exclude_paths:
+- "gulpfile.js"
