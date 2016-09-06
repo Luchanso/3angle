@@ -36,7 +36,7 @@ class Triangle extends Phaser.Sprite {
       this.rotation = Math.PI;
     }
 
-    // this.addTextPosition();
+    this.addTextPosition();
   }
 
   addTextPosition() {
