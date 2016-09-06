@@ -36,8 +36,8 @@ class Game extends Phaser.State {
 
     this.score = 0;
 
-    this.triangleMatrixWidth = 27;
-    this.triangleMatrixHeight = 9;
+    this.triangleMatrixWidth = 5;
+    this.triangleMatrixHeight = 5;
   }
 
   create() {
@@ -54,6 +54,8 @@ class Game extends Phaser.State {
     this.initializationFullScreen();
 
     this.forcePortrait = true;
+
+    window.test = this.existMove.bind(this);
   }
 
   render() {
@@ -61,7 +63,7 @@ class Game extends Phaser.State {
     // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), 'rgba(255, 255, 255, 0.2)');
     // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
     // this.game.debug.geom(this.triangleGroup.getBounds(), 'rgba(37, 43, 189, 0.5)');
-    this.universe.rotation += Math.PI / 1800 / 30;
+    this.universe.rotation += Math.PI / 1800 / 30 * 2.5;
   }
 
   createGradations() {
@@ -98,6 +100,14 @@ class Game extends Phaser.State {
         let posX = x * (Engine.Triangle.size / 2 - 1);
         let posY = y * (Engine.Triangle.size - 1);
         let isRotated = x % 2 === 1;
+        let colorSet = this.game.rnd.pick(this.colorSets);
+
+        // if (
+        //   y === 0 && x === 2 ||
+        //   y === 1 && x === 2 ||
+        //   y === 1 && x === 1) {
+        //   colorSet = this.colorSets[0];
+        // }
 
         if (y % 2 === 1) {
           isRotated = !isRotated;
@@ -108,7 +118,7 @@ class Game extends Phaser.State {
           posX,
           posY,
           isRotated,
-          this.game.rnd.pick(this.colorSets), {
+          colorSet, {
             x,
             y
           }
@@ -268,6 +278,89 @@ class Game extends Phaser.State {
 
     this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + halfTriangleSize;
     this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + halfTriangleSize;
+  }
+
+  existMove() {
+    let traingleStack = [];
+    const baseScore = 1;
+
+    // debugger;
+
+    for (let y = 0; y < this.triangleMatrixHeight; y++) {
+      for (let x = 0; x < this.triangleMatrixWidth; x++) {
+        let result = this.compareCombinations(x, y);
+        if (result) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  compareCombinations(x, y) {
+    let triangle = this.trianglesMatrix[x][y];
+    let summ = 1;
+
+    if (triangle.isRotated) {
+      let tr1 = x - 1 < 0 ? {colorSet: null} : this.trianglesMatrix[x - 1][y];
+      let tr2 = x + 1 > this.triangleMatrixWidth - 1 ? {colorSet: null} : this.trianglesMatrix[x + 1][y];
+
+      summ += triangle.colorSet === tr1.colorSet ? 1 : 0;
+      summ += triangle.colorSet === tr2.colorSet ? 1 : 0;
+    } else {
+      let tr1 = x - 1 < 0 ? {colorSet: null} : this.trianglesMatrix[x - 1][y];
+      let tr2 = x + 1 > this.triangleMatrixWidth - 1 ? {colorSet: null} : this.trianglesMatrix[x + 1][y];
+      let tr3 = y + 1 > this.triangleMatrixHeight - 1 ? {colorSet: null} : this.trianglesMatrix[x][y + 1];
+
+      if (tr3.colorSet === triangle.colorSet) {
+        summ += 1;
+
+        let tr4 = x - 1 < 0 ? {colorSet: null} : this.trianglesMatrix[x - 1][y + 1];
+        let tr5 = x + 1 > this.triangleMatrixWidth - 1 ? {colorSet: null} : this.trianglesMatrix[x + 1][y + 1];
+
+        summ += triangle.colorSet === tr4.colorSet ? 1 : 0;
+        summ += triangle.colorSet === tr5.colorSet ? 1 : 0;
+      }
+
+      summ += triangle.colorSet === tr1.colorSet ? 1 : 0;
+      summ += triangle.colorSet === tr2.colorSet ? 1 : 0;
+    }
+
+    return summ > this.minTrianglesDestroy - 1;
+  }
+
+  fl(x, y, tr, n = 1) {
+    let triangle = this.trianglesMatrix[x][y];
+
+    if (triangle.colorSet === tr.colorSet) {
+      if (n === this.minTrianglesDestroy) {
+        return true;
+      }
+
+      let leftResult = false;
+      let rightResult = false;
+      let downResult = false;
+
+      if (triangle.isRotated) {
+
+
+        if (x - 1 >= 0) leftResult = this.fl(x - 1, y, tr, n + 1);
+        if (x + 1 < this.triangleMatrixWidth) rightResult = this.fl(x + 1, y, tr, n + 1);
+
+        return leftResult || rightResult;
+      } else {
+        let result = false;
+
+        if (y + 1 < this.triangleMatrixHeight) downResult = this.fl(x, y + 1, tr, n + 1);
+        if (x - 1 >= 0) leftResult = this.fl(x - 1, y, tr, n + 1);
+        if (x + 1 < this.triangleMatrixWidth) rightResult = this.fl(x + 1, y, tr, n + 1);
+
+        return downResult + leftResult + rightResult;
+      }
+    }
+
+    return false;
   }
 }
 
