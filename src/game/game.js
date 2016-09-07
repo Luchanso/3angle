@@ -52,6 +52,7 @@ class Game extends Phaser.State {
     this.initEvents();
     this.createScoreLable();
     this.initializationFullScreen();
+    this.createHintTimer();
 
     this.forcePortrait = true;
 
@@ -83,6 +84,20 @@ class Game extends Phaser.State {
     this.universe.create();
 
     this.game.add.existing(this.universe);
+  }
+
+  createHintTimer() {
+    const hintTimeout = 20000;
+    this.hintTimer = this.game.time.create();
+
+    this.hintTimer.loop(hintTimeout, this.visualisationHint, this);
+  }
+
+  visualisationHint() {
+    let triangle = this.getHintTriangle();
+
+    if (triangle !== undefined)
+      triangle.hintMe();
   }
 
   /**
@@ -139,6 +154,8 @@ class Game extends Phaser.State {
 
     if (!isUnselect) {
       this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+      this.hintTimer.stop(false);
+      this.hintTimer.start();
     }
 
     while (this.selectedTriangles.length > 0) {
@@ -289,9 +306,6 @@ class Game extends Phaser.State {
   }
 
   existMove() {
-    let traingleStack = [];
-    const baseScore = 1;
-
     for (let y = 0; y < this.triangleMatrixHeight; y++) {
       for (let x = 0; x < this.triangleMatrixWidth; x++) {
         let result = this.compareCombinations(x, y);
@@ -358,6 +372,21 @@ class Game extends Phaser.State {
       timer.add(delayDestroy, this.rebuildMap, this);
       timer.start(0);
     }
+  }
+
+  getHintTriangle() {
+    let allResults = [];
+    for (let y = 0; y < this.triangleMatrixHeight; y++) {
+      for (let x = 0; x < this.triangleMatrixWidth; x++) {
+        let combination = this.compareCombinations(x, y);
+
+        if (combination) {
+           allResults.push(this.trianglesMatrix[x][y]);
+        }
+      }
+    }
+
+    return this.game.rnd.pick(allResults);
   }
 }
 
