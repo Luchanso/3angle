@@ -63,7 +63,7 @@ class Game extends Phaser.State {
     // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), 'rgba(255, 255, 255, 0.2)');
     // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
     // this.game.debug.geom(this.triangleGroup.getBounds(), 'rgba(37, 43, 189, 0.5)');
-    this.universe.rotation += Math.PI / 1800 / 30 * 2.5;
+    this.universe.rotation += Math.PI / 1800 / 30 * 4.5;
   }
 
   createGradations() {
@@ -142,16 +142,19 @@ class Game extends Phaser.State {
   destroyTriangle() {
     let isUnselect = this.selectedTriangles.length < this.minTrianglesDestroy;
 
-    if (!isUnselect) {
-      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
-    }
-
     while (this.selectedTriangles.length > 0) {
       let triangle = this.selectedTriangles.pop();
       if (isUnselect) {
         triangle.unselect();
       } else {
         triangle.delete();
+      }
+    }
+
+    if (!isUnselect) {
+      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+      if (this.existMove()) {
+
       }
     }
   }
@@ -284,8 +287,6 @@ class Game extends Phaser.State {
     let traingleStack = [];
     const baseScore = 1;
 
-    // debugger;
-
     for (let y = 0; y < this.triangleMatrixHeight; y++) {
       for (let x = 0; x < this.triangleMatrixWidth; x++) {
         let result = this.compareCombinations(x, y);
@@ -330,37 +331,8 @@ class Game extends Phaser.State {
     return summ > this.minTrianglesDestroy - 1;
   }
 
-  fl(x, y, tr, n = 1) {
-    let triangle = this.trianglesMatrix[x][y];
-
-    if (triangle.colorSet === tr.colorSet) {
-      if (n === this.minTrianglesDestroy) {
-        return true;
-      }
-
-      let leftResult = false;
-      let rightResult = false;
-      let downResult = false;
-
-      if (triangle.isRotated) {
-
-
-        if (x - 1 >= 0) leftResult = this.fl(x - 1, y, tr, n + 1);
-        if (x + 1 < this.triangleMatrixWidth) rightResult = this.fl(x + 1, y, tr, n + 1);
-
-        return leftResult || rightResult;
-      } else {
-        let result = false;
-
-        if (y + 1 < this.triangleMatrixHeight) downResult = this.fl(x, y + 1, tr, n + 1);
-        if (x - 1 >= 0) leftResult = this.fl(x - 1, y, tr, n + 1);
-        if (x + 1 < this.triangleMatrixWidth) rightResult = this.fl(x + 1, y, tr, n + 1);
-
-        return downResult + leftResult + rightResult;
-      }
-    }
-
-    return false;
+  rebuildMap() {
+    
   }
 }
 
