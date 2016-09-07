@@ -36,8 +36,8 @@ class Game extends Phaser.State {
 
     this.score = 0;
 
-    this.triangleMatrixWidth = 5;
-    this.triangleMatrixHeight = 5;
+    this.triangleMatrixWidth = 25;
+    this.triangleMatrixHeight = 9;
   }
 
   create() {
@@ -56,6 +56,7 @@ class Game extends Phaser.State {
     this.forcePortrait = true;
 
     window.test = this.existMove.bind(this);
+    this.game.time.advancedTiming = true;
   }
 
   render() {
@@ -63,7 +64,8 @@ class Game extends Phaser.State {
     // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), 'rgba(255, 255, 255, 0.2)');
     // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
     // this.game.debug.geom(this.triangleGroup.getBounds(), 'rgba(37, 43, 189, 0.5)');
-    this.universe.rotation += Math.PI / 1800 / 30 * 4.5;
+    this.universe.rotation += Math.PI / 1800 / 30 * 2.5;
+    this.game.debug.text(this.game.time.fps, 50, 50, 'white');
   }
 
   createGradations() {
@@ -102,13 +104,6 @@ class Game extends Phaser.State {
         let isRotated = x % 2 === 1;
         let colorSet = this.game.rnd.pick(this.colorSets);
 
-        // if (
-        //   y === 0 && x === 2 ||
-        //   y === 1 && x === 2 ||
-        //   y === 1 && x === 1) {
-        //   colorSet = this.colorSets[0];
-        // }
-
         if (y % 2 === 1) {
           isRotated = !isRotated;
         }
@@ -142,6 +137,10 @@ class Game extends Phaser.State {
   destroyTriangle() {
     let isUnselect = this.selectedTriangles.length < this.minTrianglesDestroy;
 
+    if (!isUnselect) {
+      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+    }
+
     while (this.selectedTriangles.length > 0) {
       let triangle = this.selectedTriangles.pop();
       if (isUnselect) {
@@ -152,10 +151,16 @@ class Game extends Phaser.State {
     }
 
     if (!isUnselect) {
-      this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
-      if (this.existMove()) {
+      let timerExistMove = this.game.time.create();
 
-      }
+      timerExistMove.add(
+        Triangle.animationTimeDelete +
+        Triangle.animationTimeRecover,
+        this.processPosition,
+        this
+      );
+
+      timerExistMove.start();
     }
   }
 
@@ -290,6 +295,7 @@ class Game extends Phaser.State {
     for (let y = 0; y < this.triangleMatrixHeight; y++) {
       for (let x = 0; x < this.triangleMatrixWidth; x++) {
         let result = this.compareCombinations(x, y);
+
         if (result) {
           return true;
         }
@@ -332,7 +338,26 @@ class Game extends Phaser.State {
   }
 
   rebuildMap() {
-    
+    const timeDelay = 50;
+
+    for (let x = 0; x < this.triangleMatrixWidth; x++) {
+      for (let y = 0; y < this.triangleMatrixHeight; y++) {
+        let triangle = this.trianglesMatrix[x][y];
+        let randomColorSet = this.game.rnd.pick(this.colorSets);
+
+        triangle.updateColor(randomColorSet, x * timeDelay + y * timeDelay);
+      }
+    }
+  }
+
+  processPosition() {
+    if (!this.existMove()) {
+      const delayDestroy = 5000;
+      let timer = this.game.time.create();
+
+      timer.add(delayDestroy, this.rebuildMap, this);
+      timer.start(0);
+    }
   }
 }
 
