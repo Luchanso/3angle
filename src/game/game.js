@@ -36,8 +36,8 @@ class Game extends Phaser.State {
 
     this.score = 0;
 
-    this.triangleMatrixWidth = 27;
-    this.triangleMatrixHeight = 9;
+    this.triangleMatrixWidth = 5;
+    this.triangleMatrixHeight = 4;
   }
 
   create() {
@@ -143,6 +143,9 @@ class Game extends Phaser.State {
       } else {
         triangle.delete();
       }
+    }
+    if (this.checkMove()) {
+      console.log('Game Over');
     }
   }
 
@@ -268,6 +271,68 @@ class Game extends Phaser.State {
 
     this.triangleGroup.x = this.game.width / 2 - this.triangleGroup.width / 2 + halfTriangleSize;
     this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + halfTriangleSize;
+  }
+
+  /**
+   * Check for move
+   */
+  checkMove(){
+    let usedCell = [];
+    let _self = this;
+
+    for (let x = 0; x < this.triangleMatrixWidth; x++) {
+      usedCell[x] = [];
+      for (let y = 0; y < this.triangleMatrixHeight; y++)
+        usedCell[x][y] = false;
+    }
+
+    for (let x = 0; x < this.triangleMatrixWidth; x++) {
+      for (let y = 0; y < this.triangleMatrixHeight; y++) {
+        if (!usedCell[x][y]) {
+          if (dfs(this.trianglesMatrix[x][y].colorSet, x, y, 1))
+            return false;
+        }
+      }
+    }
+    return true;
+
+    function dfs(colorSet, x, y, cnt){
+      if (colorSet != _self.trianglesMatrix[x][y].colorSet || usedCell[x][y]) {
+        return (cnt > 3);
+      }
+
+      usedCell[x][y] = true;
+      /**
+       * Go to right triangle
+       */
+      if (x + 1 < _self.triangleMatrixWidth)
+        if (dfs(colorSet, x+1, y, cnt + 1)) 
+          return true;
+      
+      /**
+       * Go to left triangle
+       */
+      if (x - 1 >= 0)
+        if (dfs(colorSet, x-1, y, cnt + 1))
+          return true;
+      
+      /**
+       * If the triangle is rotated then go to top
+       * Else got to bottom triangle
+       */
+      if (_self.trianglesMatrix[x][y].isRotated){
+        if (y - 1 >= 0)
+          if (dfs(colorSet, x, y-1, cnt + 1))
+            return true;
+      } else {
+        if (y +1 < _self.triangleMatrixHeight)
+          if (dfs(colorSet, x, y+1, cnt + 1))
+            return true;
+      }
+
+      return false;
+    }
+
   }
 }
 
