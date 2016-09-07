@@ -174,6 +174,29 @@ class Triangle extends Phaser.Sprite {
       Triangle.blinks.push(tween);
     }
   }
+
+  hintMe() {
+    let tween = this.game.add.tween(this)
+      .to({
+        width: this.width * 0.75,
+        height: this.height * 0.75
+      }, 200)
+      .to({
+        rotation: this.rotation + Math.PI / 32
+      }, 100)
+      .to({
+        rotation: this.rotation - Math.PI * 2 / 32
+      }, 100)
+      .to({
+        rotation: Math.PI * this.isRotated
+      }, 100)
+      .to({
+        width: Triangle.size,
+        height: Triangle.size
+      }, 200);
+
+    tween.start();
+  }
 }
 
 Triangle.size = 71;
