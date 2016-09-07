@@ -278,7 +278,6 @@ class Game extends Phaser.State {
    */
   checkMove(){
     let usedCell = [];
-    let _self = this;
 
     for (let x = 0; x < this.triangleMatrixWidth; x++) {
       usedCell[x] = [];
@@ -289,50 +288,49 @@ class Game extends Phaser.State {
     for (let x = 0; x < this.triangleMatrixWidth; x++) {
       for (let y = 0; y < this.triangleMatrixHeight; y++) {
         if (!usedCell[x][y]) {
-          if (dfs(this.trianglesMatrix[x][y].colorSet, x, y, 1))
+          if (this.dfs(usedCell, this.trianglesMatrix[x][y].colorSet, x, y, 1))
             return false;
         }
       }
     }
     return true;
+  }
 
-    function dfs(colorSet, x, y, cnt){
-      if (colorSet != _self.trianglesMatrix[x][y].colorSet || usedCell[x][y]) {
-        return (cnt > 3);
-      }
-
-      usedCell[x][y] = true;
-      /**
-       * Go to right triangle
-       */
-      if (x + 1 < _self.triangleMatrixWidth)
-        if (dfs(colorSet, x+1, y, cnt + 1)) 
-          return true;
-      
-      /**
-       * Go to left triangle
-       */
-      if (x - 1 >= 0)
-        if (dfs(colorSet, x-1, y, cnt + 1))
-          return true;
-      
-      /**
-       * If the triangle is rotated then go to top
-       * Else got to bottom triangle
-       */
-      if (_self.trianglesMatrix[x][y].isRotated){
-        if (y - 1 >= 0)
-          if (dfs(colorSet, x, y-1, cnt + 1))
-            return true;
-      } else {
-        if (y +1 < _self.triangleMatrixHeight)
-          if (dfs(colorSet, x, y+1, cnt + 1))
-            return true;
-      }
-
-      return false;
+  dfs(usedCell, colorSet, x, y, cnt){
+    if (colorSet != this.trianglesMatrix[x][y].colorSet || usedCell[x][y]) {
+      return (cnt > this.minTrianglesDestroy);
     }
 
+    usedCell[x][y] = true;
+    /**
+     * Go to right triangle
+     */
+    if (x + 1 < this.triangleMatrixWidth)
+      if (this.dfs(usedCell, colorSet, x+1, y, cnt + 1)) 
+        return true;
+    
+    /**
+     * Go to left triangle
+     */
+    if (x - 1 >= 0)
+      if (this.dfs(usedCell, colorSet, x-1, y, cnt + 1))
+        return true;
+    
+    /**
+     * If the triangle is rotated then go to top
+     * Else got to bottom triangle
+     */
+    if (this.trianglesMatrix[x][y].isRotated){
+      if (y - 1 >= 0)
+        if (this.dfs(usedCell, colorSet, x, y-1, cnt + 1))
+          return true;
+    } else {
+      if (y +1 < this.triangleMatrixHeight)
+        if (this.dfs(usedCell, colorSet, x, y+1, cnt + 1))
+          return true;
+    }
+
+    return false;
   }
 }
 
