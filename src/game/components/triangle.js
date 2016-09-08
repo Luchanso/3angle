@@ -197,6 +197,25 @@ class Triangle extends Phaser.Sprite {
 
     tween.start();
   }
+
+  /**
+   * Create new triangle sprite
+   */
+  static generateSprite(game) {
+    const size = 255;
+
+    let bitmap = game.add.bitmapData(size, size);
+
+    bitmap.ctx.beginPath();
+    bitmap.ctx.fillStyle = 'white';
+    bitmap.ctx.moveTo(0, size);
+    bitmap.ctx.lineTo(size / 2, 0);
+    bitmap.ctx.lineTo(size, size);
+    bitmap.ctx.lineTo(0, size);
+    bitmap.ctx.fill();
+
+    return bitmap;
+  }
 }
 
 Triangle.size = 71;
