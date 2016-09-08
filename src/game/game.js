@@ -373,7 +373,7 @@ class Game extends Phaser.State {
   }
 
   hasCombination(usedCell, colorSet, x, y, cnt) {
-    if (colorSet != this.trianglesMatrix[x][y].colorSet || usedCell[x][y]) {
+    if (colorSet !== this.trianglesMatrix[x][y].colorSet || usedCell[x][y]) {
       return (cnt > this.minTrianglesDestroy);
     }
 
