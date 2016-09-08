@@ -56,7 +56,6 @@ class Game extends Phaser.State {
 
     this.forcePortrait = true;
 
-    window.test = this.existMove.bind(this);
     this.game.time.advancedTiming = true;
   }
 
@@ -305,52 +304,6 @@ class Game extends Phaser.State {
     this.triangleGroup.y = this.game.height / 2 - this.triangleGroup.height / 2 + halfTriangleSize;
   }
 
-  existMove() {
-    for (let y = 0; y < this.triangleMatrixHeight; y++) {
-      for (let x = 0; x < this.triangleMatrixWidth; x++) {
-        let result = this.compareCombinations(x, y);
-
-        if (result) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  compareCombinations(x, y) {
-    let triangle = this.trianglesMatrix[x][y];
-    let summ = 1;
-
-    if (triangle.isRotated) {
-      let tr1 = x - 1 < 0 ? {colorSet: null} : this.trianglesMatrix[x - 1][y];
-      let tr2 = x + 1 > this.triangleMatrixWidth - 1 ? {colorSet: null} : this.trianglesMatrix[x + 1][y];
-
-      summ += triangle.colorSet === tr1.colorSet ? 1 : 0;
-      summ += triangle.colorSet === tr2.colorSet ? 1 : 0;
-    } else {
-      let tr1 = x - 1 < 0 ? {colorSet: null} : this.trianglesMatrix[x - 1][y];
-      let tr2 = x + 1 > this.triangleMatrixWidth - 1 ? {colorSet: null} : this.trianglesMatrix[x + 1][y];
-      let tr3 = y + 1 > this.triangleMatrixHeight - 1 ? {colorSet: null} : this.trianglesMatrix[x][y + 1];
-
-      if (tr3.colorSet === triangle.colorSet) {
-        summ += 1;
-
-        let tr4 = x - 1 < 0 ? {colorSet: null} : this.trianglesMatrix[x - 1][y + 1];
-        let tr5 = x + 1 > this.triangleMatrixWidth - 1 ? {colorSet: null} : this.trianglesMatrix[x + 1][y + 1];
-
-        summ += triangle.colorSet === tr4.colorSet ? 1 : 0;
-        summ += triangle.colorSet === tr5.colorSet ? 1 : 0;
-      }
-
-      summ += triangle.colorSet === tr1.colorSet ? 1 : 0;
-      summ += triangle.colorSet === tr2.colorSet ? 1 : 0;
-    }
-
-    return summ > this.minTrianglesDestroy - 1;
-  }
-
   rebuildMap() {
     const timeDelay = 50;
 
@@ -365,7 +318,7 @@ class Game extends Phaser.State {
   }
 
   processPosition() {
-    if (!this.existMove()) {
+    if (!this.getSomeCombination().length) {
       const delayDestroy = 5000;
       let timer = this.game.time.create();
 
@@ -375,18 +328,67 @@ class Game extends Phaser.State {
   }
 
   getHintTriangle() {
-    let allResults = [];
-    for (let y = 0; y < this.triangleMatrixHeight; y++) {
-      for (let x = 0; x < this.triangleMatrixWidth; x++) {
-        let combination = this.compareCombinations(x, y);
+    return this.game.rnd.pick(this.getSomeCombination());
+  }
 
-        if (combination) {
-           allResults.push(this.trianglesMatrix[x][y]);
+  /**
+   * Get existing combination, if we haven't exist move, then return empty array
+   */
+  getSomeCombination() {
+    let usedCell = [];
+    let triangles = [];
+
+    for (let x = 0; x < this.triangleMatrixWidth; x++) {
+      usedCell[x] = [];
+      for (let y = 0; y < this.triangleMatrixHeight; y++) {
+        usedCell[x][y] = false;
+      }
+    }
+
+    for (let x = 0; x < this.triangleMatrixWidth; x++) {
+      for (let y = 0; y < this.triangleMatrixHeight; y++) {
+        if (!usedCell[x][y] && this.hasCombination(usedCell, this.trianglesMatrix[x][y].colorSet, x, y, 1)) {
+          triangles.push(this.trianglesMatrix[x][y]);
         }
       }
     }
 
-    return this.game.rnd.pick(allResults);
+    return triangles;
+  }
+
+  hasCombination(usedCell, colorSet, x, y, cnt) {
+    if (colorSet != this.trianglesMatrix[x][y].colorSet || usedCell[x][y]) {
+      return (cnt > this.minTrianglesDestroy);
+    }
+
+    usedCell[x][y] = true;
+    if (x + 1 < this.triangleMatrixWidth) {
+      if (this.hasCombination(usedCell, colorSet, x + 1, y, cnt + 1)) {
+        return true;
+      }
+    }
+
+    if (x - 1 >= 0) {
+      if (this.hasCombination(usedCell, colorSet, x - 1, y, cnt + 1)) {
+        return true;
+      }
+    }
+
+    if (this.trianglesMatrix[x][y].isRotated) {
+      if (y - 1 >= 0) {
+        if (this.hasCombination(usedCell, colorSet, x, y - 1, cnt + 1)) {
+          return true;
+        }
+      }
+    } else {
+      if (y + 1 < this.triangleMatrixHeight) {
+        if (this.hasCombination(usedCell, colorSet, x, y + 1, cnt + 1)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }
 
