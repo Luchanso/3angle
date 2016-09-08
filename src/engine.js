@@ -11,4 +11,5 @@ let Engine = {
  */
 Engine.keys = {
   triangle: 'triangle',
+  meteor: 'meteor'
 }
