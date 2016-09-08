@@ -54,6 +54,8 @@ class Game extends Phaser.State {
     this.initializationFullScreen();
     this.createHintTimer();
 
+    this.createMeteor();
+
     this.forcePortrait = true;
 
     this.game.time.advancedTiming = true;
@@ -90,6 +92,20 @@ class Game extends Phaser.State {
     this.hintTimer = this.game.time.create();
 
     this.hintTimer.loop(hintTimeout, this.visualisationHint, this);
+  }
+
+  createMeteor() {
+    this.meteor = new Engine.Meteor(this.game, 50, 50, Math.PI / 4);
+    this.game.add.existing(this.meteor);
+    this.meteor.sendToBack();
+
+    //TODO: HERE
+    setInterval(() => {
+      this.meteor.reset(
+        this.game.rnd.between(100, this.game.width),
+        this.game.rnd.between(100, this.game.height),
+        this.game.rnd.realInRange(-Math.PI, Math.PI))
+    }, 1000);
   }
 
   visualisationHint() {
