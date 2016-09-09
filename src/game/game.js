@@ -57,17 +57,13 @@ class Game extends Phaser.State {
     this.createMeteor();
 
     this.forcePortrait = true;
-
-    this.game.time.advancedTiming = true;
   }
 
   render() {
-    // this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), 'rgba(255, 255, 255, 0.2)');
-    // this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), 'rgba(255, 255, 255, 0.2)');
-    // this.game.debug.inputInfo(50, 50, 'rgb(255, 255, 255)');
-    // this.game.debug.geom(this.triangleGroup.getBounds(), 'rgba(37, 43, 189, 0.5)');
-    this.universe.rotation += Math.PI / 1800 / 30 * 2.5;
-    this.game.debug.text(this.game.time.fps, 50, 50, 'white');
+  }
+
+  update() {
+    this.universe.rotation += Math.PI / 1800 / 60 * 2.5;
   }
 
   createGradations() {
