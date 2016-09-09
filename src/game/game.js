@@ -95,17 +95,54 @@ class Game extends Phaser.State {
   }
 
   createMeteor() {
-    this.meteor = new Engine.Meteor(this.game, 50, 50, Math.PI / 4);
+    const meteorTimerDelay = 20 * 1000;
+
+    this.meteor = new Engine.Meteor(this.game);
     this.game.add.existing(this.meteor);
     this.meteor.sendToBack();
+    this.meteor.outOfCameraBoundsKill = true;
+    this.meteor.kill();
 
-    //TODO: HERE
-    setInterval(() => {
-      this.meteor.reset(
-        this.game.rnd.between(100, this.game.width),
-        this.game.rnd.between(100, this.game.height),
-        this.game.rnd.realInRange(-Math.PI, Math.PI))
-    }, 1000);
+    this.meteorTimer = this.game.time.create();
+    this.meteorTimer.loop(meteorTimerDelay, () => {
+      if (this.game.rnd.pick([true, false])) {
+        this.runMeteor();
+      }
+    }, this);
+    this.meteorTimer.start();
+  }
+
+  runMeteor() {
+    const marginX = this.game.width / 10;
+    const marginY = this.game.height / 10;
+    const marginRotation = Math.PI / 10;
+    let x, y, rotation;
+    let side = this.game.rnd.pick(['top', 'left', 'right', 'bottom']);
+
+    switch (side) {
+      case 'top':
+        x = this.game.rnd.between(marginX, this.game.width - marginX);
+        y = 0;
+        rotation = this.game.rnd.realInRange(marginRotation, Math.PI - marginRotation);
+        break;
+      case 'left':
+        x = 0;
+        y = this.game.rnd.between(marginY, this.game.height - marginY);
+        rotation = this.game.rnd.realInRange(-Math.PI / 2 + marginRotation, Math.PI / 2 - marginRotation);
+        break;
+      case 'right':
+        x = this.game.width;
+        y = this.game.rnd.between(marginY, this.game.height - marginY);
+        rotation = this.game.rnd.realInRange(Math.PI / 2 + marginRotation, Math.PI * 3 / 2 - marginRotation);
+        break;
+      case 'bottom':
+        x = this.game.rnd.between(marginX, this.game.width - marginX);
+        y = this.game.height;
+        rotation = this.game.rnd.realInRange(marginRotation, -Math.PI + marginRotation);
+        break;
+    }
+
+    this.meteor.reset(x, y, rotation);
   }
 
   visualisationHint() {

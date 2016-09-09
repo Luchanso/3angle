@@ -1,5 +1,5 @@
 class Meteor extends Phaser.Sprite {
-  constructor(game, x, y, rotation, speed = 100) {
+  constructor(game, x = 0, y = 0, rotation = 0, speed = 100) {
     super(game, x, y, game.cache.getBitmapData(Engine.keys.meteor));
 
     this.speed = speed;
