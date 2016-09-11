@@ -14,6 +14,12 @@ class Game extends Phaser.State {
     this.numberOfGradation = numberOfGradation;
 
     /**
+     * Tone system manager
+     * @type {Engine}
+     */
+    this.tone = new Engine.Tone(this.game);
+
+    /**
      * MarginTop of triangles matrix
      * @type {Number}
      */
@@ -48,8 +54,11 @@ class Game extends Phaser.State {
 
     this.triangleGroup = this.game.add.group();
 
+    this.tone.create();
+
     this.sketch();
     this.initEvents();
+    this.createSounds();
     this.createScoreLable();
     this.initializationFullScreen();
     this.createHintTimer();
@@ -64,6 +73,11 @@ class Game extends Phaser.State {
 
   update() {
     this.universe.rotation += Math.PI / 1800 / 60 * 2.5;
+  }
+
+  createSounds() {
+    this.music1 = this.game.sound.add('music1', 1, true);
+    // this.music1.play();
   }
 
   createGradations() {
@@ -159,6 +173,8 @@ class Game extends Phaser.State {
    * Create triangles on canvas
    */
   sketch() {
+    const delayForDisplay = 3000;
+
     for (let x = 0; x < this.triangleMatrixWidth; x++) {
       this.trianglesMatrix[x] = [];
       for (let y = 0; y < this.triangleMatrixHeight; y++) {
@@ -182,11 +198,14 @@ class Game extends Phaser.State {
           }
         );
 
+        triangle.growUp(delayForDisplay + (x + y) * 25);
+
         triangle.events.onInputOver.add(this.selectTriangle, this);
         triangle.events.onInputDown.add(this.selectTriangle, this);
         triangle.events.deleteComplete.add(this.recoverTriangle, this);
 
         this.trianglesMatrix[x][y] = triangle;
+        // this.add.existing(triangle);
         this.triangleGroup.add(triangle);
       }
     }
@@ -198,6 +217,8 @@ class Game extends Phaser.State {
    * Destroy or unselect triangles
    */
   destroyTriangle() {
+    this.tone.reset();
+
     let isUnselect = this.selectedTriangles.length < this.minTrianglesDestroy;
 
     if (!isUnselect) {
@@ -240,6 +261,7 @@ class Game extends Phaser.State {
 
     if (this.selectedTriangles.length === 0) {
       triangle.select();
+      this.tone.up();
       this.selectedTriangles.push(triangle);
     } else {
       let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
@@ -247,12 +269,14 @@ class Game extends Phaser.State {
 
       if (triangle.selected && triangle === preLastSelectedTriangle) {
         lastSelectedTriangle.unselect();
+        this.tone.low()
         this.selectedTriangles.pop();
       } else if (!triangle.selected &&
         this.canTriangleLink(lastSelectedTriangle, triangle) &&
         lastSelectedTriangle.colorSet === triangle.colorSet
       ) {
         triangle.select();
+        this.tone.up();
         this.selectedTriangles.push(triangle);
       }
     }
