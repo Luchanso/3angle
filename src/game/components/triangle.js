@@ -107,6 +107,8 @@ class Triangle extends Phaser.Sprite {
   }
 
   recover(colorSet) {
+    const animationTime = this.game.rnd.between(200, 600);
+
     this.colorSet = colorSet;
     this.tint = this.colorSet.getRandomColor();
     this.width = Triangle.size;
@@ -116,7 +118,7 @@ class Triangle extends Phaser.Sprite {
     this.game.add.tween(this)
       .to({
         alpha: 1
-      }, Triangle.animationTimeRecover, Phaser.Easing.Bounce.Out)
+      }, animationTime, Phaser.Easing.Linear.None)
       .start();
   }
 
@@ -239,5 +241,4 @@ Triangle.size = 71;
 Triangle.blinks = [];
 Triangle.animationTimeSelect = 200;
 Triangle.animationTimeDelete = 200;
-Triangle.animationTimeRecover = 1000;
 Engine.Triangle = Triangle;
