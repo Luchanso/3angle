@@ -18,6 +18,11 @@ This is three in row game (now its only prototype) for android/ios/social and ot
 
 ![screen](https://cloud.githubusercontent.com/assets/2098777/18176542/b4b86fe2-707e-11e6-9fc5-c3ea6f4ab812.png)
 
+# CC
+
+Music:
+https://soundcloud.com/yalil
+
 ## <a name="install"></a>Install and usage
 
 install:
