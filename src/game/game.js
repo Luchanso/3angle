@@ -229,12 +229,15 @@ class Game extends Phaser.State {
       this.hintTimer.start();
     }
 
-    while (this.selectedTriangles.length > 0) {
-      let triangle = this.selectedTriangles.pop();
+    for (let i = 0; this.selectedTriangles.length > 0; i++) {
+      const betweenDalay = 50;
+
+      let triangle = this.selectedTriangles.shift();
+
       if (isUnselect) {
         triangle.unselect();
       } else {
-        triangle.delete();
+        triangle.delete(i * betweenDalay);
       }
     }
 

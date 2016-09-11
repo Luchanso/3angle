@@ -90,7 +90,7 @@ class Triangle extends Phaser.Sprite {
       }
   }
 
-  delete() {
+  delete(dalay = 0) {
     if (this.game.input.activePointer.isDown) {
       this.game.add.tween(this)
         .to({
@@ -98,6 +98,7 @@ class Triangle extends Phaser.Sprite {
           height: 0,
           alpha: 0
         }, Triangle.animationTimeDelete)
+        .delay(dalay)
         .start()
         .onComplete
         .add(() => {
