@@ -108,7 +108,7 @@ class Triangle extends Phaser.Sprite {
   }
 
   recover(colorSet) {
-    const animationTime = this.game.rnd.between(200, 600);
+    const animationTime = this.game.rnd.between(250, 300);
 
     this.colorSet = colorSet;
     this.tint = this.colorSet.getRandomColor();
@@ -241,5 +241,5 @@ class Triangle extends Phaser.Sprite {
 Triangle.size = 71;
 Triangle.blinks = [];
 Triangle.animationTimeSelect = 200;
-Triangle.animationTimeDelete = 200;
+Triangle.animationTimeDelete = 150;
 Engine.Triangle = Triangle;

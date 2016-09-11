@@ -92,6 +92,7 @@ class Game extends Phaser.State {
     this.universeFirst = new Engine.Universe(this.game);
     this.universeSecond = new Engine.Universe(this.game, 5);
 
+    // TODO: Need fix memory leak in this function in universe class
     // this.universeFirst.create();
     // this.universeSecond.create();
 
@@ -231,14 +232,14 @@ class Game extends Phaser.State {
     }
 
     for (let i = 0; this.selectedTriangles.length > 0; i++) {
-      const betweenDalay = 50;
+      const betweenAnimationDalay = 25;
 
       let triangle = this.selectedTriangles.shift();
 
       if (isUnselect) {
         triangle.unselect();
       } else {
-        triangle.delete(i * betweenDalay);
+        triangle.delete(i * betweenAnimationDalay);
       }
     }
 
