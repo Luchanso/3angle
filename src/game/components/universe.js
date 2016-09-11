@@ -13,7 +13,7 @@ class Universe extends Phaser.Sprite {
   create() {
     const maxSize = 4;
 
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 300; i++) {
       let size = this.game.rnd.between(maxSize / 2, maxSize);
       let bitmap = new Phaser.BitmapData(size, size);
 

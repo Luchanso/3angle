@@ -92,8 +92,8 @@ class Game extends Phaser.State {
     this.universeFirst = new Engine.Universe(this.game);
     this.universeSecond = new Engine.Universe(this.game, 5);
 
-    this.universeFirst.create();
-    this.universeSecond.create();
+    // this.universeFirst.create();
+    // this.universeSecond.create();
 
     this.game.add.existing(this.universeFirst);
     this.game.add.existing(this.universeSecond);
@@ -225,6 +225,7 @@ class Game extends Phaser.State {
 
     if (!isUnselect) {
       this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
+      this.shakeItShakeIt();
       this.hintTimer.stop(false);
       this.hintTimer.start();
     }
@@ -467,6 +468,27 @@ class Game extends Phaser.State {
     }
 
     return false;
+  }
+
+  shakeItShakeIt() {
+    let x = this.triangleGroup.x;
+    let y = this.triangleGroup.y;
+    let amplitudeY = 0.75;
+    let amplitudeX = 2;
+    let timeAnimation = 20;
+
+    this.add.tween(this.triangleGroup)
+      .to({
+        x: x + amplitudeX, y: y + amplitudeY
+      }, timeAnimation, Phaser.Easing.Linear.None)
+      .to({
+        x: x - amplitudeX, y: y - amplitudeY
+      }, timeAnimation, Phaser.Easing.Linear.None)
+      .to({
+        x, y
+      }, timeAnimation, Phaser.Easing.Linear.None)
+      .start();
+
   }
 }
 
