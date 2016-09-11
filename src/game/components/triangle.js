@@ -198,6 +198,23 @@ class Triangle extends Phaser.Sprite {
     tween.start();
   }
 
+  growUp(delay = 0) {
+    const time = 300 + this.game.rnd.between(-50, 50);
+
+    this.width = 0;
+    this.height = 0;
+    this.alpha = 0;
+
+    this.game.add.tween(this)
+      .to({
+        width: Triangle.size,
+        height: Triangle.size,
+        alpha: 1
+      }, time)
+      .delay(delay)
+      .start();
+  }
+
   /**
    * Create new triangle sprite
    */
