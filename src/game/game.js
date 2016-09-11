@@ -72,7 +72,6 @@ class Game extends Phaser.State {
   }
 
   update() {
-    this.universe.rotation += Math.PI / 1800 / 60 * 2.5;
   }
 
   createSounds() {
@@ -90,11 +89,14 @@ class Game extends Phaser.State {
   }
 
   createUniverse() {
-    this.universe = new Engine.Universe(this.game);
+    this.universeFirst = new Engine.Universe(this.game);
+    this.universeSecond = new Engine.Universe(this.game, 5);
 
-    this.universe.create();
+    this.universeFirst.create();
+    this.universeSecond.create();
 
-    this.game.add.existing(this.universe);
+    this.game.add.existing(this.universeFirst);
+    this.game.add.existing(this.universeSecond);
   }
 
   createHintTimer() {
@@ -364,8 +366,8 @@ class Game extends Phaser.State {
     this.scoreLable.x = this.game.width - 15;
     this.scoreLable.y = 15;
 
-    this.universe.x = this.game.width / 2;
-    this.universe.y = this.game.height / 2;
+    this.universeFirst.resize();
+    this.universeSecond.resize();
 
     this.centeringMatrix();
   }
