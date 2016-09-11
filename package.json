@@ -31,6 +31,5 @@
     "phaser": "^2.6.2"
   },
   "devDependencies": {
-    "ava": "^0.16.0"
   }
 }
