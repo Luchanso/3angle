@@ -1,6 +1,8 @@
 class Universe extends Phaser.Sprite {
   constructor(game, rotationSpeed = 2.5) {
-    super(game, game.width / 2, game.height / 2, new Phaser.BitmapData(game.width, game.height));
+    const bitmap = Universe.createBitmap();
+
+    super(game, game.width / 2, game.height / 2, bitmap);
     this.anchor.setTo(0.5);
 
     /**
@@ -10,28 +12,22 @@ class Universe extends Phaser.Sprite {
     this.rotationSpeed = rotationSpeed
   }
 
-  create() {
-    const maxSize = 4;
+  static createBitmap() {
+    const maxStarSize = 4;
+    const minStarSize = 2;
+    const bitmapSize = Math.max(Engine.game.width, Engine.game.height);
+    const stars = 300;
 
-    for (let i = 0; i < 300; i++) {
-      let size = this.game.rnd.between(maxSize / 2, maxSize);
-      let bitmap = new Phaser.BitmapData(size, size);
+    let bitmap = Engine.game.make.bitmap(bitmapSize, bitmapSize);
+    bitmap.ctx.fillStyle = 'white';
 
-      bitmap.ctx.beginPath();
-      bitmap.ctx.fillStyle = 'white';
-      bitmap.ctx.rect(0, 0, size, size);
+    for (let i = 0; i < stars; i++) {
+      let starSize = this.game.rnd.between(minStarSize, maxStarSize);
+      let x = this.game.rnd.between(-bitmapSize / 2, bitmapSize / 2);
+      let y = this.game.rnd.between(-bitmapSize / 2, bitmapSize / 2);
+
+      bitmap.ctx.rect(x, y, starSize, starSize);
       bitmap.ctx.fill();
-
-      let maxSizeSide = this.game.width > this.game.height ? this.game.width : this.game.height;
-
-      let sprite = new Phaser.Sprite(
-        this.game,
-        this.game.rnd.between(-maxSizeSide, maxSizeSide),
-        this.game.rnd.between(-maxSizeSide, maxSizeSide),
-        bitmap
-      );
-
-      this.addChild(sprite);
     }
   }
 
