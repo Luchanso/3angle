@@ -13,6 +13,7 @@ class Loader extends Phaser.State {
 
     this.game.cache.addBitmapData(Engine.keys.triangle, Engine.Triangle.generateSprite(this.game));
     this.game.cache.addBitmapData(Engine.keys.meteor, Engine.Meteor.generateSprite(this.game));
+    this.game.cache.addBitmapData(Engine.keys.universe, Engine.Universe.generateSprite(this.game));
   }
 
   create() {
@@ -23,7 +24,7 @@ class Loader extends Phaser.State {
   addProgressLable() {
     let style = {
       font: '41px Open Sans',
-      fill: '#00E676'
+      fill: '#00E676',
     }
 
     this.progressLable = this.add.text(this.game.world.centerX, this.game.world.centerY, 'Loading: 0% (0/0)', style);

@@ -1,18 +1,17 @@
 class Universe extends Phaser.Sprite {
   constructor(game, rotationSpeed = 2.5) {
-    const bitmap = Universe.createBitmap();
-
-    super(game, game.width / 2, game.height / 2, bitmap);
+    super(game, game.width / 2, game.height / 2, game.cache.getBitmapData(Engine.keys.universe));
     this.anchor.setTo(0.5);
 
     /**
      * Deegre/Sec
      * @type {[type]}
      */
-    this.rotationSpeed = rotationSpeed
+    this.rotationSpeed = rotationSpeed;
+    this.rotation = this.game.rnd.realInRange(0, Math.PI * 2);
   }
 
-  static createBitmap() {
+  static generateSprite() {
     const maxStarSize = 4;
     const minStarSize = 1;
     const bitmapSize = Math.sqrt(Math.pow(window.screen.availWidth, 2) + Math.pow(window.screen.availHeight, 2));
