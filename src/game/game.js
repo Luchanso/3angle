@@ -42,7 +42,7 @@ class Game extends Phaser.State {
 
     this.score = 0;
 
-    this.triangleMatrixWidth = 25;
+    this.triangleMatrixWidth = 26;
     this.triangleMatrixHeight = 9;
   }
 
@@ -75,7 +75,7 @@ class Game extends Phaser.State {
   }
 
   createSounds() {
-    this.music1 = this.game.sound.add('music1', 1, true);
+    // this.music1 = this.game.sound.add('music1', 1, true);
     // this.music1.play();
   }
 
@@ -89,12 +89,14 @@ class Game extends Phaser.State {
   }
 
   createUniverse() {
-    this.universeFirst = new Engine.Universe(this.game);
-    this.universeSecond = new Engine.Universe(this.game, 5);
+    /**
+     * Rotation speed for second universe
+     * @type {Number}
+     */
+    const secondRotationSpeed = 5;
 
-    // TODO: Need fix memory leak in this function in universe class
-    // this.universeFirst.create();
-    // this.universeSecond.create();
+    this.universeFirst = new Engine.Universe(this.game);
+    this.universeSecond = new Engine.Universe(this.game, secondRotationSpeed);
 
     this.game.add.existing(this.universeFirst);
     this.game.add.existing(this.universeSecond);
