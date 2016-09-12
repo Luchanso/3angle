@@ -9,7 +9,7 @@ class Triangle extends Phaser.Sprite {
    * @param  {Number}  color     [description]
    */
   constructor(game, x, y, isRotated, colorSet, matrixPosition) {
-    super(game, x, y, Engine.game.cache.getBitmapData(Engine.keys.triangle));
+    super(game, x, y, Engine.game.cache.getBitmapData(Triangle.bitmapKey));
 
     this.width = Triangle.size;
     this.height = Triangle.size;
@@ -242,4 +242,6 @@ Triangle.size = 71;
 Triangle.blinks = [];
 Triangle.animationTimeSelect = 200;
 Triangle.animationTimeDelete = 150;
+Triangle.bitmapKey = 'triangle';
+
 Engine.Triangle = Triangle;

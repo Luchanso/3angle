@@ -11,9 +11,9 @@ class Loader extends Phaser.State {
 
     // this.load.audio('music1', 'assets/music/Yal!X - Forgiven.mp3');
 
-    this.game.cache.addBitmapData(Engine.keys.triangle, Engine.Triangle.generateSprite(this.game));
-    this.game.cache.addBitmapData(Engine.keys.meteor, Engine.Meteor.generateSprite(this.game));
-    this.game.cache.addBitmapData(Engine.keys.universe, Engine.Universe.generateSprite(this.game));
+    this.game.cache.addBitmapData(Triangle.bitmapKey, Engine.Triangle.generateSprite(this.game));
+    this.game.cache.addBitmapData(Meteor.bitmapKey, Engine.Meteor.generateSprite(this.game));
+    this.game.cache.addBitmapData(Universe.bitmapKey, Engine.Universe.generateSprite(this.game));
   }
 
   create() {

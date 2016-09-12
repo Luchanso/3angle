@@ -1,6 +1,6 @@
 class Universe extends Phaser.Sprite {
   constructor(game, rotationSpeed = 2.5) {
-    super(game, game.width / 2, game.height / 2, game.cache.getBitmapData(Engine.keys.universe));
+    super(game, game.width / 2, game.height / 2, game.cache.getBitmapData(Universe.bitmapKey));
     this.anchor.setTo(0.5);
 
     /**
@@ -41,5 +41,7 @@ class Universe extends Phaser.Sprite {
     this.y = this.game.height / 2;
   }
 }
+
+Universe.bitmapKey = 'universe';
 
 Engine.Universe = Universe;

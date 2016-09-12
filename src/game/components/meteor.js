@@ -1,6 +1,6 @@
 class Meteor extends Phaser.Sprite {
   constructor(game, x = 0, y = 0, rotation = 0, speed = 100) {
-    super(game, x, y, game.cache.getBitmapData(Engine.keys.meteor));
+    super(game, x, y, game.cache.getBitmapData(Meteor.bitmapKey));
 
     this.speed = speed;
     this.anchor.setTo(1);
@@ -52,4 +52,6 @@ class Meteor extends Phaser.Sprite {
   }
 }
 
-Engine.Meteor = Meteor
+Meteor.bitmapKey = 'meteor';
+
+Engine.Meteor = Meteor;

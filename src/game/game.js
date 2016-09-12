@@ -324,7 +324,7 @@ class Game extends Phaser.State {
    */
   createScoreLable() {
     const randomColorSet = this.game.rnd.pick(this.colorSets);
-    const color = '#fff'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
+    const color = '#00E676'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
     const marginRight = 15;
     const marginTop = 15;
 
