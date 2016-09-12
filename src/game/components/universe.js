@@ -14,21 +14,23 @@ class Universe extends Phaser.Sprite {
 
   static createBitmap() {
     const maxStarSize = 4;
-    const minStarSize = 2;
-    const bitmapSize = Math.max(Engine.game.width, Engine.game.height);
+    const minStarSize = 1;
+    const bitmapSize = Math.sqrt(Math.pow(window.screen.availWidth, 2) + Math.pow(window.screen.availHeight, 2));
     const stars = 300;
 
-    let bitmap = Engine.game.make.bitmap(bitmapSize, bitmapSize);
+    let bitmap = Engine.game.make.bitmapData(bitmapSize, bitmapSize);
     bitmap.ctx.fillStyle = 'white';
 
     for (let i = 0; i < stars; i++) {
-      let starSize = this.game.rnd.between(minStarSize, maxStarSize);
-      let x = this.game.rnd.between(-bitmapSize / 2, bitmapSize / 2);
-      let y = this.game.rnd.between(-bitmapSize / 2, bitmapSize / 2);
+      let starSize = Engine.game.rnd.between(minStarSize, maxStarSize);
+      let x = Engine.game.rnd.between(0, bitmapSize);
+      let y = Engine.game.rnd.between(0, bitmapSize);
 
       bitmap.ctx.rect(x, y, starSize, starSize);
       bitmap.ctx.fill();
     }
+
+    return bitmap;
   }
 
   update() {
