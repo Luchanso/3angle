@@ -58,10 +58,11 @@ class Game extends Phaser.State {
 
     this.sketch();
     this.initEvents();
+    this.createWave();
     this.createSounds();
+    this.createHintTimer();
     this.createScoreLable();
     this.initializationFullScreen();
-    this.createHintTimer();
 
     this.createMeteor();
 
@@ -127,6 +128,12 @@ class Game extends Phaser.State {
     this.meteorTimer.start();
   }
 
+  createWave() {
+    this.wave = new Engine.Wave(this.game, 0, 0);
+
+    this.game.add.existing(this.wave);
+  }
+
   runMeteor() {
     const marginX = this.game.width / 10;
     const marginY = this.game.height / 10;
@@ -178,7 +185,7 @@ class Game extends Phaser.State {
    * Create triangles on canvas
    */
   sketch() {
-    const delayForDisplay = 3000;
+    const delayForDisplay = 500;
 
     for (let x = 0; x < this.triangleMatrixWidth; x++) {
       this.trianglesMatrix[x] = [];
@@ -242,6 +249,9 @@ class Game extends Phaser.State {
         triangle.unselect();
       } else {
         triangle.delete(i * betweenAnimationDalay);
+        if (this.selectedTriangles.length === 0) {
+          this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
+        }
       }
     }
 
@@ -400,13 +410,13 @@ class Game extends Phaser.State {
   }
 
   processPosition() {
-    if (!this.getSomeCombination().length) {
+    // if (!this.getSomeCombination().length) {
       const delayDestroy = 5000;
       let timer = this.game.time.create();
 
       timer.add(delayDestroy, this.rebuildMap, this);
       timer.start(0);
-    }
+    // }
   }
 
   getHintTriangle() {
