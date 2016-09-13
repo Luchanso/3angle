@@ -15,7 +15,7 @@ class Universe extends Phaser.Sprite {
     const maxStarSize = 4;
     const minStarSize = 1;
     const bitmapSize = Math.sqrt(Math.pow(window.screen.availWidth, 2) + Math.pow(window.screen.availHeight, 2));
-    const stars = 300;
+    const stars = 100;
 
     let bitmap = Engine.game.make.bitmapData(bitmapSize, bitmapSize);
     bitmap.ctx.fillStyle = 'white';
