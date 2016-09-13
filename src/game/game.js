@@ -42,8 +42,8 @@ class Game extends Phaser.State {
 
     this.score = 0;
 
-    this.triangleMatrixWidth = 5;
-    this.triangleMatrixHeight = 3;
+    this.triangleMatrixWidth = 25;
+    this.triangleMatrixHeight = 9;
   }
 
   create() {
@@ -65,6 +65,7 @@ class Game extends Phaser.State {
     this.initializationFullScreen();
 
     this.createMeteor();
+    this.createSnake();
 
     this.forcePortrait = true;
   }
@@ -73,6 +74,12 @@ class Game extends Phaser.State {
   }
 
   update() {
+  }
+
+  createSnake() {
+    this.snake = new Engine.Snake(this.game, 500, 500);
+
+    this.add.existing(this.snake);
   }
 
   createSounds() {
@@ -250,6 +257,8 @@ class Game extends Phaser.State {
       } else {
         triangle.delete(i * betweenAnimationDalay);
         if (this.selectedTriangles.length === 0) {
+          this.snake.animateFromTo(triangle.world.x, triangle.world.y, this.scoreLable);
+          this.snake.tint = triangle.tint;
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
       }
