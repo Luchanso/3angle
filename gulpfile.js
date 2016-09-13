@@ -58,6 +58,8 @@ gulp.task('js', () => {
     'src/game/game.js',
 
     'src/scoreboard/**/*.js',
+
+    'src/logger.js',
     'src/app.js',
   ];
 
@@ -73,7 +75,7 @@ gulp.task('js', () => {
       console.error('Error in babel task', err.toString());
     })
     .pipe(concat('app.js'))
-    .pipe(sourcemaps.write())    
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('public'))
     .pipe(connect.reload());
 });
