@@ -10,6 +10,7 @@ class Wave extends Phaser.Sprite {
   }
 
   playAnimation(x, y) {
+    const animationTime = 200;
     this.alpha = 1;
     this.x = x;
     this.y = y;
@@ -19,13 +20,12 @@ class Wave extends Phaser.Sprite {
 
     let tweenSize = this.game.add.tween(this)
       .to({
-        width: Engine.Triangle.size * 4,
-        height: Engine.Triangle.size * 4,
-      }, 200);
+        width: Engine.Triangle.size * Wave.sizeRatio,
+        height: Engine.Triangle.size * Wave.sizeRatio,
+      }, animationTime);
 
-    window.test = 0;
     let tweenDestroy = this.game.add.tween(this)
-      .to({alpha: 0}, 200)
+      .to({alpha: 0}, animationTime)
       .onUpdateCallback(() => {
         if (this.frame === Wave.countFrameAnimation - 1) {
           this.alpha = 0;
@@ -42,7 +42,7 @@ class Wave extends Phaser.Sprite {
       frames: []
     };
 
-    const size = Engine.Triangle.size * 4;
+    const size = Engine.Triangle.size * Wave.sizeRatio;
     const lineSize = 20;
     const spriteSheetWidth = Wave.countFrameAnimation;
 
@@ -83,6 +83,7 @@ class Wave extends Phaser.Sprite {
   }
 }
 
+Wave.sizeRatio = 4;
 Wave.bitmapKey = 'wave';
 Wave.countFrameAnimation = 12;
 
