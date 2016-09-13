@@ -4,8 +4,6 @@ class Loader extends Phaser.State {
   }
 
   preload() {
-    Log.write('loader', 'Preloading');
-
     this.game.stage.backgroundColor = '#000';
     this.addProgressLable();
 
@@ -13,23 +11,11 @@ class Loader extends Phaser.State {
 
     // this.load.audio('music1', 'assets/music/Yal!X - Forgiven.mp3');
 
-    Log.write('loader', 'Generate triangle');
     this.game.cache.addBitmapData(Engine.Triangle.bitmapKey, Engine.Triangle.generateSprite(this.game));
-    Log.write('loader', 'Finish generate triangle');
-
-    Log.write('loader', 'Generate meteor');
     this.game.cache.addBitmapData(Engine.Meteor.bitmapKey, Engine.Meteor.generateSprite(this.game));
-    Log.write('loader', 'Finish generate meteor');
-
-    Log.write('loader', 'Generate universe');
     this.game.cache.addBitmapData(Engine.Universe.bitmapKey, Engine.Universe.generateSprite(this.game));
-    Log.write('loader', 'Finish generate universe');
 
-    Log.write('loader', 'Generate WaveTexture');
     this.generateWaveTexture();
-    Log.write('loader', 'Finish generate WaveTexture');
-
-    Log.write('loader', 'Finish preloading...');
   }
 
   create() {
@@ -39,7 +25,7 @@ class Loader extends Phaser.State {
 
   generateWaveTexture() {
     let data = Engine.Wave.generateAtlasData();
-    this.game.cache.addTextureAtlas('circle', '', data.bitmap.canvas, data.atlasData, Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+    this.game.cache.addTextureAtlas(Wave.bitmapKey, '', data.bitmap.canvas, data.atlasData, Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   }
 
   addProgressLable() {

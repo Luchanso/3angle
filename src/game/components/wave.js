@@ -1,6 +1,6 @@
 class Wave extends Phaser.Sprite {
   constructor(game, x, y) {
-    super(game, x, y, 'circle', 0);
+    super(game, x, y, Wave.bitmapKey, 0);
 
     this.anchor.setTo(0.5);
 
