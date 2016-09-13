@@ -242,6 +242,7 @@ Triangle.size = 71;
 Triangle.blinks = [];
 Triangle.animationTimeSelect = 200;
 Triangle.animationTimeDelete = 150;
+Triangle.animationTimeRecover = 300;
 Triangle.bitmapKey = 'triangle';
 
 Engine.Triangle = Triangle;

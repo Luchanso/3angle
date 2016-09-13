@@ -42,8 +42,8 @@ class Game extends Phaser.State {
 
     this.score = 0;
 
-    this.triangleMatrixWidth = 26;
-    this.triangleMatrixHeight = 9;
+    this.triangleMatrixWidth = 5;
+    this.triangleMatrixHeight = 3;
   }
 
   create() {
@@ -410,13 +410,13 @@ class Game extends Phaser.State {
   }
 
   processPosition() {
-    // if (!this.getSomeCombination().length) {
+    if (this.getSomeCombination().length === 0) {
       const delayDestroy = 5000;
       let timer = this.game.time.create();
 
       timer.add(delayDestroy, this.rebuildMap, this);
       timer.start(0);
-    // }
+    }
   }
 
   getHintTriangle() {
