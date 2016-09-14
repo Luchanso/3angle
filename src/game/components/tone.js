@@ -12,7 +12,6 @@ class Tone {
    * Up and play next tone
    */
   up() {
-    return;
     if (this.current > Tone.count) {
       this.current = Tone.count - 1;
     }
@@ -22,7 +21,6 @@ class Tone {
   }
 
   low() {
-    return;
     if (this.current < 0) {
       this.current = 0;
     }

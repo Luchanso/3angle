@@ -72,19 +72,16 @@ class Game extends Phaser.State {
     let g = this.add.graphics(0, 0);
     g.lineStyle(10, 0xFFFFFF, 1);
 
-    let x1 = 75;
-    let y1 = 75;
-
     let t = this.game.time.create();
-    t.loop(25, () => {
-      x1 += 1;
+    t.loop(1000/30, () => {
+      // x0 += 1;
+      // y0 += 1;
 
       g.clear();
-      g.lineStyle(10, 0xFFFFFF, 1);
-      g.moveTo(50, 50);
-      g.quadraticCurveTo(75, y1, 100 + Math.sin(x1) * 100, 100);
-      g.tint = Math.sin(x1) * 0xFFFFFF;
-
+      for (let i = 0; i < 100; i++) {
+        g.lineStyle(10, Math.random() * 0xFFFFFF, 1);
+        g.drawRoundedRect(50 + i * 10, 50, 50 - i / 2, 50 - i / 2, 1);
+      }
     }, this);
     t.start();
   }
@@ -306,7 +303,7 @@ class Game extends Phaser.State {
 
     if (this.selectedTriangles.length === 0) {
       triangle.select();
-      this.tone.up();
+      // this.tone.up();
       this.selectedTriangles.push(triangle);
     } else {
       let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
@@ -314,14 +311,14 @@ class Game extends Phaser.State {
 
       if (triangle.selected && triangle === preLastSelectedTriangle) {
         lastSelectedTriangle.unselect();
-        this.tone.low()
+        // this.tone.low()
         this.selectedTriangles.pop();
       } else if (!triangle.selected &&
         this.canTriangleLink(lastSelectedTriangle, triangle) &&
         lastSelectedTriangle.colorSet === triangle.colorSet
       ) {
         triangle.select();
-        this.tone.up();
+        // this.tone.up();
         this.selectedTriangles.push(triangle);
       }
     }
