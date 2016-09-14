@@ -65,9 +65,28 @@ class Game extends Phaser.State {
     this.initializationFullScreen();
 
     this.createMeteor();
-    this.createSnake();
+    // this.createSparkles();
 
     this.forcePortrait = true;
+
+    let g = this.add.graphics(0, 0);
+    g.lineStyle(10, 0xFFFFFF, 1);
+
+    let x1 = 75;
+    let y1 = 75;
+
+    let t = this.game.time.create();
+    t.loop(25, () => {
+      x1 += 1;
+
+      g.clear();
+      g.lineStyle(10, 0xFFFFFF, 1);
+      g.moveTo(50, 50);
+      g.quadraticCurveTo(75, y1, 100 + Math.sin(x1) * 100, 100);
+      g.tint = Math.sin(x1) * 0xFFFFFF;
+
+    }, this);
+    t.start();
   }
 
   render() {
@@ -76,10 +95,10 @@ class Game extends Phaser.State {
   update() {
   }
 
-  createSnake() {
-    this.snake = new Engine.Snake(this.game, 500, 500);
+  createSparkles() {
+    this.sparkle = new Engine.Sparkle(this.game);
 
-    this.add.existing(this.snake);
+    this.add.existing(this.sparkle);
   }
 
   createSounds() {
@@ -257,8 +276,6 @@ class Game extends Phaser.State {
       } else {
         triangle.delete(i * betweenAnimationDalay);
         if (this.selectedTriangles.length === 0) {
-          this.snake.animateFromTo(triangle.world.x, triangle.world.y, this.scoreLable);
-          this.snake.tint = triangle.tint;
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
       }

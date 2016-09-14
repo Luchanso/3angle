@@ -14,6 +14,7 @@ class Loader extends Phaser.State {
     this.game.cache.addBitmapData(Engine.Triangle.bitmapKey, Engine.Triangle.generateSprite(this.game));
     this.game.cache.addBitmapData(Engine.Meteor.bitmapKey, Engine.Meteor.generateSprite(this.game));
     this.game.cache.addBitmapData(Engine.Universe.bitmapKey, Engine.Universe.generateSprite(this.game));
+    // this.game.cache.addBitmapData(Engine.Sparkle.bitmapKey, Engine.Sparkle.generateSprite(this.game));
 
     this.generateWaveTexture();
   }

@@ -43,7 +43,7 @@ class Wave extends Phaser.Sprite {
     };
 
     const size = Engine.Triangle.size * Wave.sizeRatio;
-    const lineSize = 20;
+    const lineSize = 15;
     const spriteSheetWidth = Wave.countFrameAnimation;
 
     let bitmap = Engine.game.make.bitmapData(size * spriteSheetWidth, size);
@@ -83,7 +83,7 @@ class Wave extends Phaser.Sprite {
   }
 }
 
-Wave.sizeRatio = 4;
+Wave.sizeRatio = 3.5;
 Wave.bitmapKey = 'wave';
 Wave.countFrameAnimation = 12;
 
