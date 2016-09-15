@@ -74,12 +74,6 @@ class Game extends Phaser.State {
   }
 
   render() {
-    this.game.debug.text(
-      `Snake.finishPhase: ${this.snake.finishPhase}`,
-      15,
-      15,
-      'white'
-     );
   }
 
   update() {
