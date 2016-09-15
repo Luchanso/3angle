@@ -12,6 +12,8 @@ class Snake extends Phaser.Graphics {
   }
 
   run(x, y, targetX, targetY, impulseX, impulseY, color) {
+    this.reset(0, 0);
+    this.firstImpulse = Math.sqrt(Math.pow(impulseX, 2) + Math.pow(impulseX, 2));
     this.targetX = targetX;
     this.targetY = targetY;
     this.velocityX = impulseX;
@@ -41,7 +43,12 @@ class Snake extends Phaser.Graphics {
 
     if (this.finishPhase) {
       this.makeSnapshot();
+
+      if (this.segments.length === 0) {
+        this.kill();
+      }
     }
+
     this.drawAllSegments();
   }
 
@@ -62,15 +69,14 @@ class Snake extends Phaser.Graphics {
   }
 
   isFinish() {
-    const minFinishDistance = Snake.speed;
     this.distance = this.game.math.distance(
       this.head.x,
       this.head.y,
       this.targetX,
       this.targetY
     );
-
-    return this.distance < minFinishDistance;
+    
+    return this.distance < this.firstImpulse + Snake.speed;
   }
 
   makeSnapshot() {
