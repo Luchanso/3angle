@@ -70,9 +70,16 @@ class Game extends Phaser.State {
     this.forcePortrait = true;
 
     this.snake = new Engine.Snake(this.game);
+    this.add.existing(this.snake);
   }
 
   render() {
+    this.game.debug.text(
+      `Snake.finishPhase: ${this.snake.finishPhase}`,
+      15,
+      15,
+      'white'
+     );
   }
 
   update() {
@@ -263,7 +270,10 @@ class Game extends Phaser.State {
             triangle.world.x,
             triangle.world.y,
             this.scoreLable.world.x,
-            this.scoreLable.world.y
+            this.scoreLable.world.y,
+            -10,
+            10,
+            triangle.tint
           );
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
