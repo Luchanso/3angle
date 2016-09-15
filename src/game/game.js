@@ -69,21 +69,7 @@ class Game extends Phaser.State {
 
     this.forcePortrait = true;
 
-    let g = this.add.graphics(0, 0);
-    g.lineStyle(10, 0xFFFFFF, 1);
-
-    let t = this.game.time.create();
-    t.loop(1000/30, () => {
-      // x0 += 1;
-      // y0 += 1;
-
-      g.clear();
-      for (let i = 0; i < 100; i++) {
-        g.lineStyle(10, Math.random() * 0xFFFFFF, 1);
-        g.drawRoundedRect(50 + i * 10, 50, 50 - i / 2, 50 - i / 2, 1);
-      }
-    }, this);
-    t.start();
+    this.snake = new Engine.Snake(this.game);
   }
 
   render() {
@@ -273,6 +259,12 @@ class Game extends Phaser.State {
       } else {
         triangle.delete(i * betweenAnimationDalay);
         if (this.selectedTriangles.length === 0) {
+          this.snake.run(
+            triangle.world.x,
+            triangle.world.y,
+            this.scoreLable.world.x,
+            this.scoreLable.world.y
+          );
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
       }
@@ -328,28 +320,29 @@ class Game extends Phaser.State {
    * Check triangles link
    */
   canTriangleLink(tr1, tr2) {
+    let result = false;
     if (tr1.matrixPos.y === tr2.matrixPos.y) {
       if (tr1.matrixPos.x + 1 === tr2.matrixPos.x ||
         tr1.matrixPos.x - 1 === tr2.matrixPos.x) {
-        return true;
+        result = true;
       }
     } else if (tr1.matrixPos.x === tr2.matrixPos.x) {
       if (tr1.matrixPos.x % 2 === 0) {
         if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y - 1) {
-          return true;
+          result = true;
         } else if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y + 1) {
-          return true;
+          result = true;
         }
       } else {
         if (!tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y + 1) {
-          return true;
+          result = true;
         } else if (tr1.isRotated && tr2.matrixPos.y === tr1.matrixPos.y - 1) {
-          return true;
+          result = true;
         }
       }
     }
 
-    return false;
+    return result;
   }
 
   /**
