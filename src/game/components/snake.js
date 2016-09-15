@@ -12,12 +12,6 @@ class Snake extends Phaser.Graphics {
   }
 
   run(x, y, targetX, targetY, impulseX, impulseY, color) {
-    const speed = 50;
-
-    let angle = this.game.math.angleBetween(x, y, targetX, targetY);
-    let velocityX = Math.cos(angle) * speed;
-    let velocityY = Math.sin(angle) * speed;
-
     this.targetX = targetX;
     this.targetY = targetY;
     this.velocityX = impulseX;
@@ -29,60 +23,54 @@ class Snake extends Phaser.Graphics {
       y,
     };
 
-    // BUG: Fix it
-    // When snake have big impulse and big speed, then trajectory not correctly
-    let tween = this.game.add.tween(this)
-      .to({
-        velocityX,
-        velocityY,
-      }, 200)
-      .start();
-
     this.isRun = true;
     this.finishPhase = false;
   }
 
   update() {
     if (this.isRun) {
+      this.updateVelocity();
       this.head.x += this.velocityX;
       this.head.y += this.velocityY;
       this.makeSnapshot();
+
+      if (this.isFinish()) {
+        this.stop();
+      }
     }
 
     if (this.finishPhase) {
       this.makeSnapshot();
     }
-
-    if (this.isFinish()) {
-      this.stop();
-    }
     this.drawAllSegments();
   }
 
-  stop() {
-    const finishPhaseTime = 2000;
-    let timer = this.game.time.create();
+  updateVelocity() {
+    const stepsUpdate = 60 * 0.2;
 
+    let angle = this.game.math.angleBetween(this.head.x, this.head.y, this.targetX, this.targetY);
+    let velocityX = Math.cos(angle) * Snake.speed;
+    let velocityY = Math.sin(angle) * Snake.speed;
+
+    this.velocityX += (velocityX - this.velocityX) / stepsUpdate;
+    this.velocityY += (velocityY - this.velocityY) / stepsUpdate;
+  }
+
+  stop() {
     this.isRun = false;
     this.finishPhase = true;
-
-    timer.add(finishPhaseTime, () => {
-      this.finishPhase = false;
-      this.segments = [];
-    }, this);
-    // timer.start();
   }
 
   isFinish() {
-    // BUG: bad way
-    const minFinishDistance = 15;
-
-    return this.game.math.distance(
+    const minFinishDistance = Snake.speed;
+    this.distance = this.game.math.distance(
       this.head.x,
       this.head.y,
       this.targetX,
       this.targetY
-    ) < minFinishDistance;
+    );
+
+    return this.distance < minFinishDistance;
   }
 
   makeSnapshot() {
@@ -107,29 +95,40 @@ class Snake extends Phaser.Graphics {
 
   drawAllSegments() {
     this.clear();
-    this.lineStyle(10, this.color, 1);
 
     for (let i = 0; i < this.segments.length; i++) {
       let segment = this.segments[i];
-      let nextSegment = this.segments[i + 1] || {
-        x: segment.x,
-        y: segment.Y
-      };
+      let nextSegment = this.segments[i + 1] || segment;
 
       this.moveTo(
         segment.x,
         segment.y
       );
 
+      this.lineStyle(Snake.size, this.color, 1);
+
       this.lineTo(
         nextSegment.x,
         nextSegment.y
       );
+
+      if (this.isRun) {
+        this.lineStyle(0, 0, 0);
+
+        this.beginFill(this.color);
+        this.drawCircle(
+          segment.x,
+          segment.y,
+          Snake.size
+        )
+        this.endFill();
+      }
     }
   }
 }
 
 Snake.maxSegments = 10;
-Snake.widthSegment = 10;
+Snake.size = 10;
+Snake.speed = 50;
 
 Engine.Snake = Snake;
