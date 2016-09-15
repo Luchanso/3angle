@@ -60,17 +60,14 @@ class Game extends Phaser.State {
     this.initEvents();
     this.createWave();
     this.createSounds();
+    this.createSnakes();
     this.createHintTimer();
     this.createScoreLable();
     this.initializationFullScreen();
 
     this.createMeteor();
-    // this.createSparkles();
 
     this.forcePortrait = true;
-
-    this.snake = new Engine.Snake(this.game);
-    this.add.existing(this.snake);
   }
 
   render() {
@@ -79,10 +76,16 @@ class Game extends Phaser.State {
   update() {
   }
 
-  createSparkles() {
-    this.sparkle = new Engine.Sparkle(this.game);
+  createSnakes() {
+    const snakesPullSize = 30;
+    this.snakes = this.game.add.group();
 
-    this.add.existing(this.sparkle);
+    for (let i = 0; i < snakesPullSize; i++) {
+      let snake = new Engine.Snake(this.game);
+      snake.kill();
+
+      this.snakes.add(snake);
+    }
   }
 
   createSounds() {
@@ -260,15 +263,7 @@ class Game extends Phaser.State {
       } else {
         triangle.delete(i * betweenAnimationDalay);
         if (this.selectedTriangles.length === 0) {
-          this.snake.run(
-            triangle.world.x,
-            triangle.world.y,
-            this.scoreLable.world.x,
-            this.scoreLable.world.y,
-            -10,
-            10,
-            triangle.tint
-          );
+          this.snakesAnimationRun(triangle.world.x, triangle.world.y, triangle.colorSet);
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
       }
@@ -522,6 +517,27 @@ class Game extends Phaser.State {
       }, timeAnimation, Phaser.Easing.Linear.None)
       .start();
 
+  }
+
+  snakesAnimationRun(x, y, colorGradation) {
+    let count = 5;
+    const force = 5;
+
+    for (let i = 0; i < count; i++) {
+      let snake = this.snakes.getFirstDead();
+
+      let angle = (Math.PI * 2) / count * i;
+      let impulseX = Math.cos(angle) * force;
+      let impulseY = Math.sin(angle) * force;
+      snake.run(x,
+        y,
+        this.scoreLable.world.x,
+        this.scoreLable.world.y,
+        impulseX,
+        impulseY,
+        colorGradation.getRandomColor()
+      );
+    }
   }
 }
 
