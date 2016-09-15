@@ -521,7 +521,7 @@ class Game extends Phaser.State {
 
   snakesAnimationRun(x, y, colorGradation) {
     let count = 5;
-    const force = 5;
+    const force = 25;
 
     for (let i = 0; i < count; i++) {
       let snake = this.snakes.getFirstDead();

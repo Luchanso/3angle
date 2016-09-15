@@ -53,7 +53,7 @@ class Snake extends Phaser.Graphics {
   }
 
   updateVelocity() {
-    const stepsUpdate = 60 * 0.2;
+    const stepsUpdate = 60 * 0.1;
 
     let angle = this.game.math.angleBetween(this.head.x, this.head.y, this.targetX, this.targetY);
     let velocityX = Math.cos(angle) * Snake.speed;
@@ -75,7 +75,7 @@ class Snake extends Phaser.Graphics {
       this.targetX,
       this.targetY
     );
-    
+
     return this.distance < this.firstImpulse + Snake.speed;
   }
 
