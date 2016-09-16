@@ -44,7 +44,11 @@ class Snake extends Phaser.Graphics {
     if (this.finishPhase) {
       this.makeSnapshot();
 
-      if (this.segments.length === 0) {
+      if (
+        this.segments[0].x === this.head.x &&
+        this.segments[0].y === this.head.y
+      ) {
+        this.finishPhase = false;
         this.kill();
       }
     }
@@ -81,20 +85,13 @@ class Snake extends Phaser.Graphics {
 
   makeSnapshot() {
     let segment;
-    let angle = this.game.math.angleBetween(
-      this.head.x,
-      this.head.y,
-      this.targetX,
-      this.targetY
-    );
 
     while (this.segments.length > Snake.maxSegments) segment = this.segments.shift();
 
     segment = {
       x: this.head.x,
       y: this.head.y,
-      angle: angle
-    }
+    };
 
     this.segments.push(segment);
   }
