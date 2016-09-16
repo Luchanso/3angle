@@ -253,9 +253,10 @@ class Game extends Phaser.State {
       this.hintTimer.start();
     }
 
-    for (let i = 0; this.selectedTriangles.length > 0; i++) {
-      const betweenAnimationDalay = 25;
+    const betweenAnimationDalay = 25;
+    const snakeForTriangle = 2;
 
+    for (let i = 0; this.selectedTriangles.length > 0; i++) {
       let triangle = this.selectedTriangles.shift();
 
       if (isUnselect) {
@@ -263,7 +264,7 @@ class Game extends Phaser.State {
       } else {
         triangle.delete(i * betweenAnimationDalay);
         if (this.selectedTriangles.length === 0) {
-          this.snakesAnimationRun(triangle.world.x, triangle.world.y, triangle.colorSet);
+          this.snakesAnimationRun(triangle.world.x, triangle.world.y, triangle.colorSet, Math.floor((i + 1) / snakeForTriangle));
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
       }
@@ -519,8 +520,7 @@ class Game extends Phaser.State {
 
   }
 
-  snakesAnimationRun(x, y, colorGradation) {
-    let count = 5;
+  snakesAnimationRun(x, y, colorGradation, count) {
     const force = 25;
 
     for (let i = 0; i < count; i++) {
