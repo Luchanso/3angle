@@ -8,7 +8,7 @@ class Triangle extends Phaser.Sprite {
    * @param  {Boolean} isRotated [description]
    * @param  {Number}  color     [description]
    */
-  constructor(game, x, y, isRotated, colorSet, matrixPosition) {
+  constructor(game, x, y, isRotated, colorSet, matrixPosition = null) {
     super(game, x, y, Engine.game.cache.getBitmapData(Triangle.bitmapKey));
 
     this.width = Triangle.size;
