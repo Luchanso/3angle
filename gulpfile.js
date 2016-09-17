@@ -52,7 +52,9 @@ gulp.task('js', () => {
     'src/engine.js',
     'src/boot/**/*.js',
     'src/loader/**/*.js',
-    'src/menu/**/*.js',
+
+    'src/menu/components/**/*.js',
+    'src/menu/menu.js',
 
     'src/game/components/**/*.js',
     'src/game/game.js',
