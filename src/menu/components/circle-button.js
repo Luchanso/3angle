@@ -6,8 +6,17 @@ class CircleButton extends Phaser.Graphics {
     this.reDraw();
   }
 
-  constructor(game, x, y, radius, color) {
+  constructor(game, x, y, radius, color, iconName = null) {
     super(game, 0, 0);
+
+    this.game.add.existing(this);
+
+    if (iconName !== null) {
+      this.icon = this.game.add.sprite(x, y, iconName);
+      this.icon.anchor.setTo(0.5);
+      this.icon.width = radius * 1.5;
+      this.icon.height = radius * 1.5;
+    }
 
     this.data.x = x;
     this.data.y = y;
@@ -18,13 +27,23 @@ class CircleButton extends Phaser.Graphics {
     this.radius = radius;
   }
 
+  hideIcon() {
+    const animationTime = 325;
+
+    this.game.add.tween(this.icon)
+      .to({
+        alpha: 0
+      }, animationTime)
+      .start();
+  }
+
   reDraw() {
     this.clear();
     this.beginFill(this.data.color);
     this.drawCircle(
       this.data.x,
       this.data.y,
-      this.data.radius
+      this.data.radius * 2
     );
     this.endFill();
   }
