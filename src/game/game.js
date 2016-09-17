@@ -108,12 +108,65 @@ class Game extends Phaser.State {
      * @type {Number}
      */
     const secondRotationSpeed = 5;
+    const delayForSecondUniverseShow = 500;
 
     this.universeFirst = new Engine.Universe(this.game);
     this.universeSecond = new Engine.Universe(this.game, secondRotationSpeed);
 
+    this.universeFirst.alpha = 0;
+    this.universeSecond.alpha = 0;
+
     this.game.add.existing(this.universeFirst);
     this.game.add.existing(this.universeSecond);
+
+    this.add.tween(this.universeFirst)
+      .to({
+        alpha: 1
+      })
+      .start();
+
+    this.add.tween(this.universeSecond)
+      .to({
+        alpha: 1
+      })
+      .delay(delayForSecondUniverseShow)
+      .start();
+  }
+
+  /**
+   * Add score on stage
+   */
+  createScoreLable() {
+    const randomColorSet = this.game.rnd.pick(this.colorSets);
+    const color = '#00E676'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
+    const marginRight = 15;
+    const marginTop = 15;
+
+    const style = {
+      font: '42px Open Sans',
+      fontStyle: 'italic',
+      fill: color
+    }
+
+    this.scoreLable = new Engine.ScoreLable(
+      this.game,
+      this.game.width - marginRight,
+      marginTop,
+      0,
+      style
+    );
+    this.scoreLable.anchor.setTo(1, 0);
+    this.scoreLable.alpha = 0;
+
+    this.add.tween(this.scoreLable)
+      .to({
+        alpha: 1
+      })
+      .start();
+
+    // TODO: TEMP
+    this.scoreLable.inputEnabled = true;
+    this.scoreLable.events.onInputDown.add(this.toggleFullScreen, this);
   }
 
   createHintTimer() {
@@ -343,35 +396,6 @@ class Game extends Phaser.State {
     }
 
     return result;
-  }
-
-  /**
-   * Add score on stage
-   */
-  createScoreLable() {
-    const randomColorSet = this.game.rnd.pick(this.colorSets);
-    const color = '#00E676'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
-    const marginRight = 15;
-    const marginTop = 15;
-
-    const style = {
-      font: '42px Open Sans',
-      fontStyle: 'italic',
-      fill: color
-    }
-
-    this.scoreLable = new Engine.ScoreLable(
-      this.game,
-      this.game.width - marginRight,
-      marginTop,
-      0,
-      style
-    );
-    this.scoreLable.anchor.setTo(1, 0);
-
-    // TODO: TEMP
-    this.scoreLable.inputEnabled = true;
-    this.scoreLable.events.onInputDown.add(this.toggleFullScreen, this);
   }
 
   initializationFullScreen() {
