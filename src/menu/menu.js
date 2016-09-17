@@ -12,12 +12,23 @@ class Menu extends Phaser.State {
 
   create() {
     this.createBackground();
+    this.createLogo();
     this.createButtons();
   }
 
   createLogo() {
-    // let
-    // this.
+    const style = {
+      font: '52px Open Sans',
+      fill: 'white'
+    };
+
+    this.logoLable = this.add.text(
+      this.game.world.centerX,
+      this.game.world.centerY / 2,
+      'Three Angle',
+      style
+    );
+    this.logoLable.anchor.setTo(0.5);
   }
 
   createBackground() {
@@ -37,12 +48,11 @@ class Menu extends Phaser.State {
       this.game.world.centerX,
       this.game.world.centerY,
       this.playBtnRadius,
-      this.playBtnColor
+      this.playBtnColor,
+      'icon-play'
     );
 
     this.playBtn.events.onInputDown.add(this.animatePlayBtn, this);
-
-    this.add.existing(this.playBtn);
   }
 
   createStartGameText() {
@@ -76,6 +86,8 @@ class Menu extends Phaser.State {
       this.game.width**2 +
       this.game.height**2
     );
+
+    this.playBtn.hideIcon();
 
     let tween = this.add.tween(this.playBtn)
       .to({
@@ -117,7 +129,7 @@ class Menu extends Phaser.State {
   }
 
   render() {
-    const color = 'rgba(65, 194, 242, 0)';
+    const color = 'rgba(65, 194, 242, 1)';
 
     this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), color);
     this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), color);
