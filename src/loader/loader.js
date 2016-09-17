@@ -10,6 +10,7 @@ class Loader extends Phaser.State {
     this.load.onFileComplete.add(this.refreshProgress, this);
 
     // this.load.audio('music1', 'assets/music/Yal!X - Forgiven.mp3');
+    this.load.image('icon-play', 'assets/img/icon-play.png');
 
     this.game.cache.addBitmapData(Engine.Triangle.bitmapKey, Engine.Triangle.generateSprite(this.game));
     this.game.cache.addBitmapData(Engine.Meteor.bitmapKey, Engine.Meteor.generateSprite(this.game));
@@ -19,7 +20,7 @@ class Loader extends Phaser.State {
     this.generateWaveTexture();
   }
 
-  create() {    
+  create() {
     this.state.start('Menu');
   }
 
