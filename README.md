@@ -1,5 +1,6 @@
 # 3agnle
 
+![Repository Size](https://reposs.herokuapp.com/?path=luchanso/3angle&color=brightgreen)
 [![Dependency Status](https://gemnasium.com/badges/github.com/Luchanso/3angle.svg)](https://gemnasium.com/github.com/Luchanso/3angle)
 [![Code Climate](https://codeclimate.com/github/Luchanso/3angle/badges/gpa.svg)](https://codeclimate.com/github/Luchanso/3angle)
 [![Issue Count](https://codeclimate.com/github/Luchanso/3angle/badges/issue_count.svg)](https://codeclimate.com/github/Luchanso/3angle)
