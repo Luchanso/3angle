@@ -19,9 +19,8 @@ class Loader extends Phaser.State {
     this.generateWaveTexture();
   }
 
-  create() {
-    let numberOfGradation = 3;
-    this.state.start('Game', true, false, numberOfGradation);
+  create() {    
+    this.state.start('Menu');
   }
 
   generateWaveTexture() {
