@@ -4,12 +4,10 @@ class Settings extends Phaser.State {
   }
 
   init(bgColor) {
-    this.backgroundColor = bgColor;
+    this.stage.backgroundColor = bgColor;
   }
 
   create() {
-    this.createBackground();
-
     let test = this.add.text(
       this.game.world.centerX,
       this.game.world.centerY,
@@ -25,13 +23,6 @@ class Settings extends Phaser.State {
       alpha: 1
     })
     .start();
-  }
-
-  createBackground() {
-    this.background = this.add.graphics(0, 0);
-    this.background.beginFill(this.backgroundColor);
-    this.background.drawRect(0, 0, this.game.width, this.game.height);
-    this.background.endFill();
   }
 }
 

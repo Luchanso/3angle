@@ -8,11 +8,10 @@ class Menu extends Phaser.State {
     this.playBtnRadius = 50;
     this.orbitsRadius = this.playBtnRadius + 100;
 
-    this.backgroundColor = 0x4A148C;
+      this.stage.backgroundColor = 0x4A148C;
   }
 
   create() {
-    this.createBackground();
     this.createLogo();
     this.createBtns();
   }
@@ -31,13 +30,6 @@ class Menu extends Phaser.State {
       style
     );
     this.logoLable.anchor.setTo(0.5);
-  }
-
-  createBackground() {
-    this.background = this.add.graphics(0, 0);
-    this.background.beginFill(this.backgroundColor);
-    this.background.drawRect(0, 0, this.game.width, this.game.height);
-    this.background.endFill();
   }
 
   createBtns() {
