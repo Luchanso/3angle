@@ -26,6 +26,32 @@ class CircleButton extends Phaser.Graphics {
     this.inputEnabled = true;
 
     this.radius = radius;
+    this.onClick = new Phaser.Signal();
+
+    this.events.onInputDown.addOnce(this.animateBtn, this);
+  }
+
+  animateBtn() {
+    const animationTime = 350;
+    const newBtnRadius = Math.sqrt(
+      this.game.width**2 +
+      this.game.height**2
+    );
+
+    this.parent.bringToTop(this);
+
+    this.hideIcon();
+
+    let tween = this.game.add.tween(this)
+      .to({
+        radius: newBtnRadius
+      }, animationTime, Phaser.Easing.Sinusoidal.InOut);
+
+    tween.onComplete.add(() => {
+      this.onClick.dispatch();
+    }, this);
+
+    tween.start();
   }
 
   hideIcon() {

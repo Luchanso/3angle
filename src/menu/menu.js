@@ -60,7 +60,7 @@ class Menu extends Phaser.State {
       'icon-play'
     );
 
-    this.playBtn.events.onInputDown.add(this.animatePlayBtn, this);
+    this.playBtn.onClick.add(this.clickPlayBtn, this);
   }
 
   createSettingsBtn() {
@@ -74,6 +74,8 @@ class Menu extends Phaser.State {
       btnColor,
       'icon-settings'
     );
+
+    this.settingsBtn.onClick.add(this.clickSettingsBtn, this);
   }
 
   createShareBtn() {
@@ -87,6 +89,8 @@ class Menu extends Phaser.State {
       btnColor,
       'icon-share'
     );
+
+    this.shareBtn.onClick.add(this.clickShareBtn, this);
   }
 
   createLeaderboardBtn() {
@@ -100,6 +104,8 @@ class Menu extends Phaser.State {
       btnColor,
       'icon-list'
     );
+
+    this.leaderboardBtn.onClick.add(this.clickLeaderboardBtn, this);
   }
 
   animateAdditionalBtns() {
@@ -140,7 +146,7 @@ class Menu extends Phaser.State {
     this.startText = this.add.text(
       this.game.world.centerX,
       this.game.world.centerY,
-      'Starting new game...',
+      'Starting game...',
       style
     );
 
@@ -154,30 +160,11 @@ class Menu extends Phaser.State {
       .start();
   }
 
-  animatePlayBtn() {
-    this.playBtn.events.onInputDown.remove(this.animatePlayBtn, this);
+  clickPlayBtn() {
+    const delay = 2000;
 
-    const animationTime = 350;
-    const newPlayBtnRadius = Math.sqrt(
-      this.game.width**2 +
-      this.game.height**2
-    );
-
-    this.playBtn.hideIcon();
-
-    let tween = this.add.tween(this.playBtn)
-      .to({
-        radius: newPlayBtnRadius
-      }, animationTime, Phaser.Easing.Sinusoidal.InOut);
-
-    tween.onComplete.add(this.finishAnimatePlayBtn, this);
-
-    tween.start();
-  }
-
-  finishAnimatePlayBtn() {
     this.createStartGameText();
-    this.createBlackoutAnimation()
+    this.createBlackoutAnimation(delay)
       .onComplete
       .add(() => {
         this.state.restart();
@@ -186,9 +173,32 @@ class Menu extends Phaser.State {
       }, this);
   }
 
-  createBlackoutAnimation() {
-    const delay = 2000;
+  clickSettingsBtn() {
+    this.state.start(
+      'Settings',
+      true,
+      false,
+      this.settingsBtn.data.color
+    );
+  }
 
+  clickLeaderboardBtn() {
+    this.createBlackoutAnimation()
+      .onComplete
+      .add(() => {
+        this.state.restart();
+      }, this);
+  }
+
+  clickShareBtn() {
+    this.createBlackoutAnimation()
+      .onComplete
+      .add(() => {
+        this.state.restart();
+      }, this);
+  }
+
+  createBlackoutAnimation(delay = 0) {
     let blackoutLayout = this.add.graphics(0, 0);
     blackoutLayout.alpha = 0;
     blackoutLayout.beginFill(0);
