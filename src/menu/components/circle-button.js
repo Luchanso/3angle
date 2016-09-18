@@ -1,5 +1,4 @@
 class CircleButton extends Phaser.Graphics {
-
   get radius() { return this.data.radius }
   set radius(val) {
     this.data.radius = val;
@@ -16,6 +15,8 @@ class CircleButton extends Phaser.Graphics {
       this.icon.anchor.setTo(0.5);
       this.icon.width = radius * 1.5;
       this.icon.height = radius * 1.5;
+
+      this.addChild(this.icon);
     }
 
     this.data.x = x;
