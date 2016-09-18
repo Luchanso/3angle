@@ -53,6 +53,8 @@ gulp.task('js', () => {
     'src/boot/**/*.js',
     'src/loader/**/*.js',
 
+    'src/settings/settings.js',
+
     'src/menu/components/**/*.js',
     'src/menu/menu.js',
 
