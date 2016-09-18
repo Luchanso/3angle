@@ -301,7 +301,7 @@ class Game extends Phaser.State {
 
     if (!isUnselect) {
       this.updateScore(Math.pow(this.selectedTriangles.length, 2.15) * 10);
-      this.shakeItShakeIt();
+      this.shakeItShakeIt(this.selectedTriangles.length);
       this.hintTimer.stop(false);
       this.hintTimer.start();
     }
@@ -523,25 +523,40 @@ class Game extends Phaser.State {
     return false;
   }
 
-  shakeItShakeIt() {
+  /**
+   * ScreeShaker Hero
+   */
+  shakeItShakeIt(destroyedTriangles) {
     let x = this.triangleGroup.x;
     let y = this.triangleGroup.y;
-    let amplitudeY = 0.75;
-    let amplitudeX = 2;
-    let timeAnimation = 20;
+    let amplitudeY = this.rnd.between(1, destroyedTriangles * 0.9);
+    let amplitudeX = this.rnd.between(1, destroyedTriangles * 0.9);
+    let timeAnimation = 15;
+    let numbersPulse = 10;
+    let amplitudePart = Math.sqrt(Math.pow(amplitudeX, 2) + Math.pow(amplitudeY, 2)) / numbersPulse;
 
-    this.add.tween(this.triangleGroup)
-      .to({
-        x: x + amplitudeX, y: y + amplitudeY
-      }, timeAnimation, Phaser.Easing.Linear.None)
-      .to({
-        x: x - amplitudeX, y: y - amplitudeY
-      }, timeAnimation, Phaser.Easing.Linear.None)
-      .to({
-        x, y
-      }, timeAnimation, Phaser.Easing.Linear.None)
-      .start();
+    let shakerTween = this.add.tween(this.triangleGroup);
 
+    for (let i = 0; i < numbersPulse; i++) {
+      if (i % 2 === 0) {
+        shakerTween.to({
+          x: x + amplitudeX, y: y + amplitudeY
+        }, timeAnimation, Phaser.Easing.Linear.None);
+      } else {
+        shakerTween.to({
+          x: x - amplitudeX, y: y - amplitudeY
+        }, timeAnimation, Phaser.Easing.Linear.None);
+      }
+
+      amplitudeX -= amplitudePart;
+      amplitudeY -= amplitudePart;
+    }
+
+    shakerTween.onComplete.add(() => {
+      this.triangleGroup.x = x;
+      this.triangleGroup.y = y;
+    }, this);
+    shakerTween.start();
   }
 
   snakesAnimationRun(x, y, colorGradation, count) {
