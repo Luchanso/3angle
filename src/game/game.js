@@ -81,10 +81,7 @@ class Game extends Phaser.State {
     this.snakes = this.game.add.group();
 
     for (let i = 0; i < snakesPullSize; i++) {
-      let snake = new Engine.Snake(this.game);
-      snake.kill();
-
-      this.snakes.add(snake);
+      this.addSnake();
     }
   }
 
@@ -565,10 +562,16 @@ class Game extends Phaser.State {
     for (let i = 0; i < count; i++) {
       let snake = this.snakes.getFirstDead();
 
+      if (snake === null) {
+        snake = this.addSnake();
+      }
+
       let angle = (Math.PI * 2) / count * i;
       let impulseX = Math.cos(angle) * force;
       let impulseY = Math.sin(angle) * force;
-      snake.run(x,
+
+      snake.run(
+        x,
         y,
         this.scoreLable.world.x,
         this.scoreLable.world.y,
@@ -577,6 +580,15 @@ class Game extends Phaser.State {
         colorGradation.getRandomColor()
       );
     }
+  }
+
+  addSnake() {
+    let snake = new Engine.Snake(this.game);
+    snake.kill();
+
+    this.snakes.add(snake);
+
+    return snake;
   }
 }
 
