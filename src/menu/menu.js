@@ -6,6 +6,7 @@ class Menu extends Phaser.State {
   init() {
     this.playBtnColor = 0x2196F3;
     this.playBtnRadius = 50;
+    this.orbitsRadius = this.playBtnRadius + 100;
 
     this.backgroundColor = 0x4A148C;
   }
@@ -13,10 +14,11 @@ class Menu extends Phaser.State {
   create() {
     this.createBackground();
     this.createLogo();
-    this.createButtons();
+    this.createBtns();
   }
 
   createLogo() {
+    return;
     const style = {
       font: '52px Open Sans',
       fill: 'white'
@@ -38,11 +40,17 @@ class Menu extends Phaser.State {
     this.background.endFill();
   }
 
-  createButtons() {
-    this.createPlayButton();
+  createBtns() {
+    this.createLeaderboardBtn();
+    this.createSettingsBtn();
+    this.createShareBtn();
+
+    this.createPlayBtn();
+
+    this.animateAdditionalBtns();
   }
 
-  createPlayButton() {
+  createPlayBtn() {
     this.playBtn = new Engine.CircleButton(
       this.game,
       this.game.world.centerX,
@@ -53,6 +61,74 @@ class Menu extends Phaser.State {
     );
 
     this.playBtn.events.onInputDown.add(this.animatePlayBtn, this);
+  }
+
+  createSettingsBtn() {
+    const btnColor = 0x009688;
+
+    this.settingsBtn = new Engine.CircleButton(
+      this.game,
+      this.game.world.centerX,
+      this.game.world.centerY,
+      this.playBtnRadius / 2,
+      btnColor,
+      'icon-settings'
+    );
+  }
+
+  createShareBtn() {
+    const btnColor = 0xE91E63;
+
+    this.shareBtn = new Engine.CircleButton(
+      this.game,
+      this.game.world.centerX,
+      this.game.world.centerY,
+      this.playBtnRadius / 2,
+      btnColor,
+      'icon-share'
+    );
+  }
+
+  createLeaderboardBtn() {
+    const btnColor = 0xFF5722;
+
+    this.leaderboardBtn = new Engine.CircleButton(
+      this.game,
+      this.game.world.centerX,
+      this.game.world.centerY,
+      this.playBtnRadius / 2,
+      btnColor,
+      'icon-list'
+    );
+  }
+
+  animateAdditionalBtns() {
+    const animationTime = 1000;
+    const maxDelay = 500;
+
+    let anglePart = (Math.PI * 2) / 3;
+
+    this.add.tween(this.shareBtn)
+      .to({
+        x: this.playBtn.x + Math.cos(anglePart) * this.orbitsRadius,
+        y: this.playBtn.y + Math.sin(anglePart) * this.orbitsRadius
+      }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
+      .start();
+
+    this.add.tween(this.settingsBtn)
+      .to({
+        x: this.playBtn.x + Math.cos(anglePart * 2) * this.orbitsRadius,
+        y: this.playBtn.y + Math.sin(anglePart * 2) * this.orbitsRadius
+      }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
+      .start();
+
+    this.add.tween(this.leaderboardBtn)
+      .to({
+        x: this.playBtn.x + Math.cos(anglePart * 3) * this.orbitsRadius,
+        y: this.playBtn.y + Math.sin(anglePart * 3) * this.orbitsRadius
+      }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
+      .start();
+
   }
 
   createStartGameText() {
@@ -104,8 +180,9 @@ class Menu extends Phaser.State {
     this.createBlackoutAnimation()
       .onComplete
       .add(() => {
-        let numberOfGradation = 3;
-        this.state.start('Game', true, false, numberOfGradation);
+        this.state.restart();
+        // let numberOfGradation = 3;
+        // this.state.start('Game', true, false, numberOfGradation);
       }, this);
   }
 
@@ -129,10 +206,12 @@ class Menu extends Phaser.State {
   }
 
   render() {
-    const color = 'rgba(65, 194, 242, 1)';
+    const color = 'rgba(65, 194, 242, 0)';
 
     this.game.debug.geom(new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY), color);
     this.game.debug.geom(new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height), color);
+
+    // this.game.debug.inputInfo(25, 25);
   }
 }
 
