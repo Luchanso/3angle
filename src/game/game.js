@@ -62,6 +62,7 @@ class Game extends Phaser.State {
     this.createSounds();
     this.createSnakes();
     this.createHintTimer();
+    this.createScoreBadge();
     this.createScoreLable();
     this.initializationFullScreen();
 
@@ -71,9 +72,22 @@ class Game extends Phaser.State {
   }
 
   render() {
+    // this.game.debug.sprite
   }
 
-  update() {
+  update() {}
+
+  createScoreBadge() {
+    const marginBadge = 35;
+
+    this.scoreBadge = new Engine.ScoreBadge(this.game, 850, 500);
+
+    this.scoreBadge.update = () => {
+      this.scoreBadge.x = this.game.input.x;
+      this.scoreBadge.y = this.game.input.y - marginBadge;
+    }
+
+    this.game.add.existing(this.scoreBadge);
   }
 
   createSnakes() {
@@ -314,6 +328,7 @@ class Game extends Phaser.State {
       } else {
         triangle.delete(i * betweenAnimationDalay);
         if (this.selectedTriangles.length === 0) {
+          this.scoreBadge.hide();
           this.snakesAnimationRun(triangle.world.x, triangle.world.y, triangle.colorSet, Math.floor((i + 1) / snakeForTriangle));
           this.wave.playAnimation(triangle.world.x, triangle.world.y, triangle.isRotated);
         }
@@ -345,25 +360,42 @@ class Game extends Phaser.State {
 
     if (this.selectedTriangles.length === 0) {
       triangle.select();
-      // this.tone.up();
       this.selectedTriangles.push(triangle);
+
     } else {
       let lastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 1];
       let preLastSelectedTriangle = this.selectedTriangles[this.selectedTriangles.length - 2];
 
       if (triangle.selected && triangle === preLastSelectedTriangle) {
         lastSelectedTriangle.unselect();
-        // this.tone.low()
         this.selectedTriangles.pop();
+        this.newUnselect(this.selectedTriangles.length);
       } else if (!triangle.selected &&
         this.canTriangleLink(lastSelectedTriangle, triangle) &&
         lastSelectedTriangle.colorSet === triangle.colorSet
       ) {
         triangle.select();
-        // this.tone.up();
         this.selectedTriangles.push(triangle);
+        this.newSelect(this.selectedTriangles.length);
       }
     }
+  }
+
+  newSelect(count) {
+    if (count > this.minTrianglesDestroy - 1) {
+      this.scoreBadge.score = Math.round(Math.pow(count, 2.15) * 10);
+      this.scoreBadge.show();
+    }
+    // this.tone.up();
+  }
+
+  newUnselect(count) {
+    if (count < this.minTrianglesDestroy) {
+      this.scoreBadge.hide();
+    } else {
+      this.scoreBadge.score = Math.round(Math.pow(count, 2.15) * 10);
+    }
+    // this.tone.low();
   }
 
   /**
@@ -537,11 +569,13 @@ class Game extends Phaser.State {
     for (let i = 0; i < numbersPulse; i++) {
       if (i % 2 === 0) {
         shakerTween.to({
-          x: x + amplitudeX, y: y + amplitudeY
+          x: x + amplitudeX,
+          y: y + amplitudeY
         }, timeAnimation, Phaser.Easing.Linear.None);
       } else {
         shakerTween.to({
-          x: x - amplitudeX, y: y - amplitudeY
+          x: x - amplitudeX,
+          y: y - amplitudeY
         }, timeAnimation, Phaser.Easing.Linear.None);
       }
 
