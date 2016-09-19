@@ -159,9 +159,9 @@ class Menu extends Phaser.State {
     this.createBlackoutAnimation(delay)
       .onComplete
       .add(() => {
-        this.state.restart();
-        // let numberOfGradation = 3;
-        // this.state.start('Game', true, false, numberOfGradation);
+        // this.state.restart();
+        let numberOfGradation = 3;
+        this.state.start('Game', true, false, numberOfGradation);
       }, this);
   }
 

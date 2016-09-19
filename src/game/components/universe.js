@@ -1,35 +1,31 @@
-class Universe extends Phaser.Sprite {
+class Universe extends Phaser.Graphics {
   constructor(game, rotationSpeed = 2.5) {
-    super(game, game.width / 2, game.height / 2, game.cache.getBitmapData(Universe.bitmapKey));
+    super(game, game.world.centerX, game.world.centerY);
     this.anchor.setTo(0.5);
 
-    /**
-     * Deegre/Sec
-     * @type {[type]}
-     */
     this.rotationSpeed = rotationSpeed;
     this.rotation = this.game.rnd.realInRange(0, Math.PI * 2);
+
+    this.drawUniverse();
   }
 
-  static generateSprite() {
+  drawUniverse() {
     const maxStarSize = 4;
     const minStarSize = 1;
-    const bitmapSize = Math.sqrt(Math.pow(window.screen.availWidth, 2) + Math.pow(window.screen.availHeight, 2));
+    const universeSize = Math.sqrt(Math.pow(window.screen.availWidth, 2) + Math.pow(window.screen.availHeight, 2));
     const stars = 100;
 
-    let bitmap = Engine.game.make.bitmapData(bitmapSize, bitmapSize);
-    bitmap.ctx.fillStyle = 'white';
+    for (var i = 0; i < stars; i++) {
+      const whiteGradation = 255 - this.game.rnd.between(0, 32);
+      const starColor = Phaser.Color.getColor(whiteGradation, whiteGradation, whiteGradation);
+      let x = this.game.rnd.between(-universeSize / 2, universeSize / 2);
+      let y = this.game.rnd.between(-universeSize / 2, universeSize / 2);
+      let startSize = this.game.rnd.between(minStarSize, maxStarSize);
 
-    for (let i = 0; i < stars; i++) {
-      let starSize = Engine.game.rnd.between(minStarSize, maxStarSize);
-      let x = Engine.game.rnd.between(0, bitmapSize);
-      let y = Engine.game.rnd.between(0, bitmapSize);
-
-      bitmap.ctx.rect(x, y, starSize, starSize);
-      bitmap.ctx.fill();
+      this.beginFill(starColor);
+      this.drawRect(x, y, startSize, startSize);
+      this.endFill();
     }
-
-    return bitmap;
   }
 
   update() {
@@ -41,7 +37,5 @@ class Universe extends Phaser.Sprite {
     this.y = this.game.height / 2;
   }
 }
-
-Universe.bitmapKey = 'universe';
 
 Engine.Universe = Universe;
