@@ -38,7 +38,7 @@ class ScoreBadge extends Phaser.Graphics {
     this.clear();
 
     this.beginFill(backgroundColor, 0.8);
-    this.drawRoundedRect(-(this.lable.width + paddings) / 2, -(this.lable.height + paddings) / 2, this.lable.width + paddings * 2, this.lable.height, radius);
+    this.drawRoundedRect(-(this.lable.width + paddings * 2) / 2, -(this.lable.height + paddings) / 2, this.lable.width + paddings * 2, this.lable.height, radius);
     this.endFill();
   }
 
