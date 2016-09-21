@@ -8,7 +8,7 @@ class Menu extends Phaser.State {
     this.playBtnRadius = 50;
     this.orbitsRadius = this.playBtnRadius + 100;
 
-      this.stage.backgroundColor = 0x4A148C;
+    this.stage.backgroundColor = 0x4A148C;
   }
 
   create() {
@@ -33,13 +33,21 @@ class Menu extends Phaser.State {
   }
 
   createBtns() {
-    this.createLeaderboardBtn();
-    this.createSettingsBtn();
-    this.createShareBtn();
+    let leaderboardBtn = this.createLeaderboardBtn();
+    let settingsBtn = this.createSettingsBtn();
+    let shareBtn = this.createShareBtn();
+    let lvlPickBtn = this.createLvlPickBtn();
 
-    this.createPlayBtn();
+    let playBtn = this.createPlayBtn();
 
-    this.animateAdditionalBtns();
+    let additionalBtns = [
+      settingsBtn,
+      leaderboardBtn,
+      lvlPickBtn,
+      shareBtn
+    ];
+
+    this.animateAdditionalBtns(additionalBtns);
   }
 
   createPlayBtn() {
@@ -53,6 +61,8 @@ class Menu extends Phaser.State {
     );
 
     this.playBtn.onClick.add(this.clickPlayBtn, this);
+
+    return this.playBtn;
   }
 
   createSettingsBtn() {
@@ -68,6 +78,8 @@ class Menu extends Phaser.State {
     );
 
     this.settingsBtn.onClick.add(this.clickSettingsBtn, this);
+
+    return this.settingsBtn;
   }
 
   createShareBtn() {
@@ -83,6 +95,8 @@ class Menu extends Phaser.State {
     );
 
     this.shareBtn.onClick.add(this.clickShareBtn, this);
+
+    return this.shareBtn;
   }
 
   createLeaderboardBtn() {
@@ -94,38 +108,68 @@ class Menu extends Phaser.State {
       this.game.world.centerY,
       this.playBtnRadius / 2,
       btnColor,
-      'icon-list'
+      'icon-star'
     );
 
     this.leaderboardBtn.onClick.add(this.clickLeaderboardBtn, this);
+
+    return this.leaderboardBtn;
   }
 
-  animateAdditionalBtns() {
+  createLvlPickBtn() {
+    const btnColor = 0x3F51B5;
+
+    this.lvlPickBtn = new Engine.CircleButton(
+      this.game,
+      this.game.world.centerX,
+      this.game.world.centerY,
+      this.playBtnRadius / 2,
+      btnColor,
+      'icon-apps'
+    );
+
+    this.lvlPickBtn.onClick.add(this.clickLvlPickBtn, this);
+
+    return this.lvlPickBtn;
+  }
+
+  animateAdditionalBtns(btns) {
     const animationTime = 1000;
     const maxDelay = 500;
 
-    let anglePart = (Math.PI * 2) / 3;
+    let anglePart = (Math.PI * 2) / btns.length;
 
-    this.add.tween(this.shareBtn)
+    for (let i = 0; i < btns.length; i++) {
+      let btn = btns[i];
+
+      this.add.tween(btn)
       .to({
-        x: this.playBtn.x + Math.cos(anglePart) * this.orbitsRadius,
-        y: this.playBtn.y + Math.sin(anglePart) * this.orbitsRadius
+        x: this.playBtn.x + Math.cos(Math.PI / 4 + anglePart * (1 + i)) * this.orbitsRadius,
+        y: this.playBtn.y + Math.sin(Math.PI / 4 + anglePart * (1 + i)) * this.orbitsRadius
       }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
       .start();
+    }
 
-    this.add.tween(this.settingsBtn)
-      .to({
-        x: this.playBtn.x + Math.cos(anglePart * 2) * this.orbitsRadius,
-        y: this.playBtn.y + Math.sin(anglePart * 2) * this.orbitsRadius
-      }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
-      .start();
-
-    this.add.tween(this.leaderboardBtn)
-      .to({
-        x: this.playBtn.x + Math.cos(anglePart * 3) * this.orbitsRadius,
-        y: this.playBtn.y + Math.sin(anglePart * 3) * this.orbitsRadius
-      }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
-      .start();
+    // this.add.tween(this.shareBtn)
+    //   .to({
+    //     x: this.playBtn.x + Math.cos(anglePart) * this.orbitsRadius,
+    //     y: this.playBtn.y + Math.sin(anglePart) * this.orbitsRadius
+    //   }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
+    //   .start();
+    //
+    // this.add.tween(this.settingsBtn)
+    //   .to({
+    //     x: this.playBtn.x + Math.cos(anglePart * 2) * this.orbitsRadius,
+    //     y: this.playBtn.y + Math.sin(anglePart * 2) * this.orbitsRadius
+    //   }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
+    //   .start();
+    //
+    // this.add.tween(this.leaderboardBtn)
+    //   .to({
+    //     x: this.playBtn.x + Math.cos(anglePart * 3) * this.orbitsRadius,
+    //     y: this.playBtn.y + Math.sin(anglePart * 3) * this.orbitsRadius
+    //   }, animationTime + this.rnd.between(0, maxDelay), Phaser.Easing.Elastic.Out)
+    //   .start();
 
   }
 
@@ -163,6 +207,15 @@ class Menu extends Phaser.State {
         let numberOfGradation = 3;
         this.state.start('Game', true, false, numberOfGradation);
       }, this);
+  }
+
+  clickLvlPickBtn() {
+    this.state.start(
+      'Lvlpick',
+      true,
+      false,
+      this.lvlPickBtn.data.color
+    );
   }
 
   clickSettingsBtn() {
