@@ -11,9 +11,10 @@ class Loader extends Phaser.State {
 
     // this.load.audio('music1', 'assets/music/Yal!X - Forgiven.mp3');
     this.load.image('icon-play', 'assets/img/icon-play.png');
-    this.load.image('icon-list', 'assets/img/icon-list.png');
     this.load.image('icon-share', 'assets/img/icon-share.png');
     this.load.image('icon-settings', 'assets/img/icon-settings.png');
+    this.load.image('icon-star', 'assets/img/icon-star.png');
+    this.load.image('icon-apps', 'assets/img/icon-apps.png');
 
     this.game.cache.addBitmapData(Engine.Triangle.bitmapKey, Engine.Triangle.generateSprite(this.game));
     this.game.cache.addBitmapData(Engine.Meteor.bitmapKey, Engine.Meteor.generateSprite(this.game));
@@ -23,8 +24,9 @@ class Loader extends Phaser.State {
 
   create() {
     // let numberOfGradation = 3;
-    // this.state.start('Game', true, false, numberOfGradation);
     this.state.start('Menu');
+    // this.state.start('Game', true, false, numberOfGradation);
+    // this.state.start('Lvlpick', true, false, 0x3F51B5);
   }
 
   generateWaveTexture() {
