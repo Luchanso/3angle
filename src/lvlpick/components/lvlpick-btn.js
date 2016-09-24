@@ -1,33 +1,61 @@
 class LvlpickBtn extends Phaser.Graphics {
-  constructor(game, x, y, color, number, stars, isLock) {
+  constructor(game, x, y, color, numberPositon, countStars, isLock = false) {
     super(game, x, y);
 
     this.data.color = color;
-    this.data.stars = stars;
+    this.data.countStars = countStars;
     this.data.isLock = isLock;
-    this.data.number = number;
+    this.data.numberPositon = numberPositon;
+    this.data.defaultColor = 0xE0E0E0;
+    this.data.lockColor = 0x9E9E9E;
 
-    this.reDraw();
-    // this.add.text = 
+    this.triangleSize = 47;
+
+    this.drawTriangles();
   }
 
-  reDraw() {
-    const size = LvlpickBtn.size;
-    const linewWidth = LvlpickBtn.lineWidth;
-    const height = Math.sqrt(Math.pow(size, 2) - Math.pow(size / 2, 2));
+  drawTriangles() {
+    const maxTriangles = 3;
+    const margin = 15;
+    const size = this.triangleSize;
+    const summSize = size + (margin + size / 2) * (maxTriangles - 1);
 
-    this.clear();
+    for (let i = 0; i < maxTriangles; i++) {
+      let color = this.data.defaultColor;
+      let x = this.game.world.centerX - summSize / 2 + (size / 2 + margin) * i;
+      let y = 0;
+      let isOdd = i % 2 !== 0;
 
-    this.lineStyle(linewWidth, this.data.color);
+      if (this.data.isLock) {
+        color = this.data.lockColor;
+      }
+      else if (i < this.data.countStars) {
+        color = this.data.color;
+      }
 
-    this.moveTo(0, height);
-    this.lineTo(size, height);
-    this.lineTo(size / 2, 0);
-    this.lineTo(0, height);
+      this.drawTriangle(x, y, color, isOdd);
+    }
+  }
+
+  drawTriangle(x, y, color, isRotated = false) {
+    const size = this.triangleSize;
+
+    this.beginFill(color);
+
+    if (isRotated) {
+      this.moveTo(x, y);
+      this.lineTo(x + size / 2, y + size);
+      this.lineTo(x + size, y);
+      this.lineTo(x, y);
+    } else {
+      this.moveTo(x, y + size);
+      this.lineTo(x + size, y + size);
+      this.lineTo(x + size / 2, y);
+      this.lineTo(x, y + size);
+    }
+
+    this.endFill();
   }
 }
-
-LvlpickBtn.size = 128;
-LvlpickBtn.lineWidth = 5;
 
 Engine.LvlpickBtn = LvlpickBtn;
