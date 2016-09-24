@@ -1,17 +1,18 @@
 class LvlpickBtn extends Phaser.Graphics {
-  constructor(game, x, y, color, numberPositon, countStars, isLock = false) {
+  constructor(game, x, y, color, numberPosition, countStars, isLock = false) {
     super(game, x, y);
 
     this.data.color = color;
     this.data.countStars = countStars;
     this.data.isLock = isLock;
-    this.data.numberPositon = numberPositon;
+    this.data.numberPosition = numberPosition;
     this.data.defaultColor = 0xE0E0E0;
     this.data.lockColor = 0x9E9E9E;
 
     this.triangleSize = 47;
 
     this.drawTriangles();
+    this.addNumberPosition();
   }
 
   drawTriangles() {
@@ -25,6 +26,10 @@ class LvlpickBtn extends Phaser.Graphics {
       let x = this.game.world.centerX - summSize / 2 + (size / 2 + margin) * i;
       let y = 0;
       let isOdd = i % 2 !== 0;
+
+      if (this.data.numberPosition % 2 === 0) {
+        isOdd = !isOdd;
+      }
 
       if (this.data.isLock) {
         color = this.data.lockColor;
@@ -55,6 +60,31 @@ class LvlpickBtn extends Phaser.Graphics {
     }
 
     this.endFill();
+  }
+
+  addNumberPosition() {
+    const marginRight = 100;
+    const style = {
+      font: '27px Open Sans',
+      fontWeight: 'bold',
+      fill: Phaser.Color.getWebRGB(this.data.color)
+    };
+    const x = this.game.world.centerX - marginRight;
+    const y = this.triangleSize / 2;
+
+    if (this.data.isLock) {
+      style.fill = Phaser.Color.getWebRGB(this.data.lockColor);
+    }
+
+    this.lable = this.game.make.text(
+      x,
+      y,
+      this.data.numberPosition + '.',
+      style
+    );
+    this.lable.anchor.setTo(0.5);
+
+    this.addChild(this.lable);
   }
 }
 
