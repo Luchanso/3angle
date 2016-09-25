@@ -1,8 +1,6 @@
 class Game extends Phaser.State {
   constructor() {
     super();
-
-    window.gg = this;
   }
 
   init(numberOfGradation) {

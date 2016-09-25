@@ -44,7 +44,6 @@ class ScoreBadge extends Phaser.Graphics {
 
   show() {
     if (this.isVisible) {
-      console.log("visible:", this.isVisible);
       return;
     }
 
@@ -90,7 +89,6 @@ class ScoreBadge extends Phaser.Graphics {
     tween.start();
 
     this.isVisible = false;
-    console.log(this.isVisible);
   }
 }
 
