@@ -1,8 +1,8 @@
 class LvlpickBtn extends Phaser.Graphics {
-  constructor(game, x, y, number, isLock) {
+  constructor(game, x, y, number, status) {
     super(game, x, y);
 
-    this.data.isLock = isLock;
+    this.data.status = status;
     this.data.numberPosition = number;
 
     this.drawBtn();
@@ -11,15 +11,24 @@ class LvlpickBtn extends Phaser.Graphics {
 
   drawBtn() {
     const size = LvlpickBtn.size;
-    const activeColor = 0xCFD8DC;// 0x9d9d9d;
+    const activeColor = 0xCFD8DC;
     const lockedColor = 0x546E7A;
+    const doneColor = 0x00E676;
 
     let color;
 
-    if (this.data.isLock) {
-      color = lockedColor;
-    } else {
-      color = activeColor;
+    switch (this.data.status) {
+      case LvlpickBtn.STATUS_LOCKED:
+        color = lockedColor;
+        break;
+
+      case LvlpickBtn.STATUS_ACTIVE:
+        color = activeColor;
+        break;
+
+      case LvlpickBtn.STATUS_DONE:
+        color = doneColor;
+        break;
     }
 
     this.beginFill(color);
@@ -40,7 +49,9 @@ class LvlpickBtn extends Phaser.Graphics {
     this.addChild(this.lable);
   }
 }
-
+LvlpickBtn.STATUS_LOCKED = 1;
+LvlpickBtn.STATUS_ACTIVE = 2;
+LvlpickBtn.STATUS_DONE = 3;
 LvlpickBtn.size = 75;
 
 Engine.LvlpickBtn = LvlpickBtn;
