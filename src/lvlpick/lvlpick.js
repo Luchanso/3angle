@@ -90,6 +90,7 @@ class Lvlpick extends Phaser.State {
   }
 
   createBtns() {
+    const lvl = Engine.Lvl.instance;
     const margin = 50;
     const btnSize = Engine.LvlpickBtn.size;
     const animationDelay = 350;
@@ -103,18 +104,30 @@ class Lvlpick extends Phaser.State {
       for (let x = 0; x < this.btnGridWidth; x++, number++) {
         let posX = x * (btnSize + margin);
         let posY = y * (btnSize + margin);
+        let status;
+
+        if (lvl.opend.includes(number)) {
+          status = LvlpickBtn.STATUS_ACTIVE;
+        } else if (lvl.done.includes(number)) {
+          status = LvlpickBtn.STATUS_DONE;
+        } else {
+          status = LvlpickBtn.STATUS_LOCKED;
+        }
 
         let btn = new Engine.LvlpickBtn(
           this.game,
           posX,
           posY,
           number,
-          number % 5 === 0
+          status
         );
 
         btn.alpha = 0;
-        btn.inputEnabled = true;
-        btn.events.onInputDown.add(this.btnClick, this);
+
+        if (status !== LvlpickBtn.STATUS_LOCKED) {
+          btn.inputEnabled = true;
+          btn.events.onInputDown.add(this.btnClick, this);
+        }
 
         this.add.tween(btn)
           .to({
