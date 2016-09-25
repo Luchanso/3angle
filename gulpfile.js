@@ -49,7 +49,9 @@ gulp.task('html', () => {
 
 gulp.task('js', () => {
   const src = [
-    'src/engine.js',
+    'src/engine/engine.js',
+    'src/engine/**/*.js',
+
     'src/boot/**/*.js',
     'src/loader/**/*.js',
 
@@ -75,13 +77,13 @@ gulp.task('js', () => {
     .on('error', err => {
       console.error('Error in compress task', err.toString());
     })
+    .pipe(concat('app.js'))    
     .pipe(babel({
       "presets": ["es2015"]
     }))
     .on('error', err => {
       console.error('Error in babel task', err.toString());
     })
-    .pipe(concat('app.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('public'))
     .pipe(connect.reload());
