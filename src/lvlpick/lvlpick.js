@@ -18,6 +18,7 @@ class Lvlpick extends Phaser.State {
   }
 
   render() {
+    return;
     let line1 = new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height);
     let line2 = new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY);
 
@@ -91,6 +92,8 @@ class Lvlpick extends Phaser.State {
   createBtns() {
     const margin = 50;
     const btnSize = Engine.LvlpickBtn.size;
+    const animationDelay = 350;
+    const animationTime = 250;
 
     let number = 1;
 
@@ -106,8 +109,19 @@ class Lvlpick extends Phaser.State {
           posX,
           posY,
           number,
-          this.rnd.pick([0, 1])
+          number % 5 === 0
         );
+
+        btn.alpha = 0;
+        btn.inputEnabled = true;
+        btn.events.onInputDown.add(this.btnClick, this);
+
+        this.add.tween(btn)
+          .to({
+            alpha: 1
+          }, animationTime)
+          .delay(animationDelay)
+          .start();
 
         this.btnGroup.add(btn);
       }
@@ -115,6 +129,30 @@ class Lvlpick extends Phaser.State {
 
     this.btnGroup.x = this.game.width / 2 - this.btnGroup.width / 2;
     this.btnGroup.y = this.game.height / 2 - this.btnGroup.height / 2;
+  }
+
+  btnClick(btn) {
+    // console.log(this.world.children);
+    this.fadeAnimation()
+      .onComplete
+      .add(() => {
+        this.state.start('Game', true, false, 3);
+      }, this);
+  }
+
+  fadeAnimation() {
+    const animationTime = 250;
+    let lastTween = {}
+
+    for (let displayObj of this.world.children) {
+      lastTween = this.add.tween(displayObj)
+        .to({
+          alpha: 0
+        }, animationTime)
+        .start();
+    }
+
+    return lastTween;
   }
 }
 
