@@ -5,6 +5,9 @@ class Lvlpick extends Phaser.State {
 
   init(bgColor) {
     this.stage.backgroundColor = bgColor;
+
+    this.btnGridWidth = 5;
+    this.btnGridHeight = 3;
   }
 
   create() {
@@ -86,37 +89,32 @@ class Lvlpick extends Phaser.State {
   }
 
   createBtns() {
-    let testBtn = new Engine.LvlpickBtn(
-      this.game,
-      0,
-      this.lable.y + this.lable.height + 15,
-      0x00E5FF,
-      1,
-      2,
-    );
+    const margin = 50;
+    const btnSize = Engine.LvlpickBtn.size;
 
-    let testBtn2 = new Engine.LvlpickBtn(
-      this.game,
-      0,
-      testBtn.y + testBtn.height + 15,
-      0x00E5FF,
-      2,
-      2,
-      true
-    );
+    let number = 1;
 
-    let testBtn3 = new Engine.LvlpickBtn(
-      this.game,
-      0,
-      testBtn2.y + testBtn2.height + 15,
-      0x00E5FF,
-      3,
-      3
-    );
+    this.btnGroup = this.add.group();
 
-    this.add.existing(testBtn);
-    this.add.existing(testBtn2);
-    this.add.existing(testBtn3);
+    for (let y = 0; y < this.btnGridHeight; y++) {
+      for (let x = 0; x < this.btnGridWidth; x++, number++) {
+        let posX = x * (btnSize + margin);
+        let posY = y * (btnSize + margin);
+
+        let btn = new Engine.LvlpickBtn(
+          this.game,
+          posX,
+          posY,
+          number,
+          this.rnd.pick([0, 1])
+        );
+
+        this.btnGroup.add(btn);
+      }
+    }
+
+    this.btnGroup.x = this.game.width / 2 - this.btnGroup.width / 2;
+    this.btnGroup.y = this.game.height / 2 - this.btnGroup.height / 2;
   }
 }
 
