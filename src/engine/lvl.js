@@ -19,9 +19,9 @@ class Lvl {
       window.localStorage.setItem('lvl', JSON.stringify(data));
     }
 
-    this.current = data.current;
-    this.opend = data.opened;
-    this.done = data.done;
+    this._current = data.current;
+    this._opend = data.opened;
+    this._done = data.done;
   }
 
   static get instance() {
@@ -30,6 +30,29 @@ class Lvl {
     }
 
     return Lvl._instance;
+  }
+
+  saveDataInStorage() {
+    let data = {
+
+    }
+    
+    window.localStorage.setImage('lvl', JSON.stringify(data));
+  }
+
+  get current() { return this._current; }
+  set current(value) {
+    this._current = value;
+  }
+
+  get opend() { return this._opend; }
+  set opend(value) {
+    this._opend = value;
+  }
+
+  get done() { return this._done; }
+  set done(value) {
+    this._done = value;
   }
 }
 
