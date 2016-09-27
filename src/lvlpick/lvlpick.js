@@ -17,15 +17,6 @@ class Lvlpick extends Phaser.State {
     this.createBtns();
   }
 
-  render() {
-    return;
-    let line1 = new Phaser.Line(this.game.world.centerX, 0, this.game.world.centerX, this.game.height);
-    let line2 = new Phaser.Line(0, this.game.world.centerY, this.game.width, this.game.world.centerY);
-
-    this.game.debug.geom(line1, 'rgb(0, 70, 255)');
-    this.game.debug.geom(line2, 'rgb(0, 70, 255)');
-  }
-
   animateBackground() {
     const targetColor = 0x0;
     const targetRadius = Math.sqrt(Math.pow(this.game.width, 2) + Math.pow(this.game.height, 2));
