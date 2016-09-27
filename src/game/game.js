@@ -42,6 +42,8 @@ class Game extends Phaser.State {
 
     this.triangleMatrixWidth = 25;
     this.triangleMatrixHeight = 9;
+
+    this.lvl = Engine.Lvl.instance;
   }
 
   create() {
@@ -63,7 +65,7 @@ class Game extends Phaser.State {
     this.createScoreBadge();
     this.createScoreLabel();
     this.initializationFullScreen();
-
+    this.createLvlLabel();
     this.createMeteor();
 
     this.forcePortrait = true;
@@ -155,7 +157,7 @@ class Game extends Phaser.State {
       font: '42px Open Sans',
       fontStyle: 'italic',
       fill: color
-    }
+    };
 
     this.scoreLabel = new Engine.ScoreLabel(
       this.game,
@@ -179,11 +181,26 @@ class Game extends Phaser.State {
   }
 
   createLvlLabel() {
+    const marginRight = 15;
+    const marginTop = 0;
+    const x = this.game.width - marginRight;
+    const y = marginTop + this.scoreLabel.y + this.scoreLabel.height;
+    const text = `LvL: ${this.lvl.current}`;
     const style = {
-
+      font: '36px Open Sans',
+      fontStyle: 'italic',
+      fill: '#FFC107',
     };
 
-    this.lvlLabel = this.add.text();
+    this.lvlLabel = this.add.text(x, y, text, style);
+    this.lvlLabel.anchor.setTo(1, 0);
+    this.lvlLabel.alpha = 0;
+
+    this.add.tween(this.lvlLabel)
+      .to({
+        alpha: 1
+      })
+      .start();
   }
 
   createHintTimer() {
