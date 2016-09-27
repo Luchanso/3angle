@@ -63,6 +63,7 @@ class Game extends Phaser.State {
     this.createSnakes();
     this.createHintTimer();
     this.createScoreBadge();
+    this.createIlluminati();
     this.createScoreLabel();
     this.initializationFullScreen();
     this.createLvlLabel();
@@ -201,6 +202,31 @@ class Game extends Phaser.State {
         alpha: 1
       })
       .start();
+  }
+
+  createIlluminati() {
+    const marginTop = 50;
+    const x = this.game.world.centerX;
+    const y = marginTop;
+    const animationTime = 2000;
+    const animationType = Phaser.Easing.Linear.None;
+
+    this.ill = new Engine.Illuminati(this.game, x, y);
+
+    this.add.tween(this.ill)
+      .to({
+        x: x + 200
+      }, animationTime, animationType)
+      .to({
+        x: x - 200
+      }, animationTime * 2, animationType)
+      .to({
+        x: x
+      }, animationTime, animationType)
+      .loop(-1)
+      .start();
+
+    this.add.existing(this.ill);
   }
 
   createHintTimer() {
