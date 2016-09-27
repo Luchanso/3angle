@@ -23,13 +23,13 @@ class Menu extends Phaser.State {
       fill: 'white'
     };
 
-    this.logoLable = this.add.text(
+    this.logoLabel = this.add.text(
       this.game.world.centerX,
       this.game.world.centerY / 2,
       'Three Angle',
       style
     );
-    this.logoLable.anchor.setTo(0.5);
+    this.logoLabel.anchor.setTo(0.5);
   }
 
   createBtns() {

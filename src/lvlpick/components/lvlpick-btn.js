@@ -43,10 +43,10 @@ class LvlpickBtn extends Phaser.Graphics {
       fill: 'black'
     };
 
-    this.lable = this.game.make.text(size / 2, size / 2, this.data.numberPosition, style);
-    this.lable.anchor.setTo(0.5);
+    this.label = this.game.make.text(size / 2, size / 2, this.data.numberPosition, style);
+    this.label.anchor.setTo(0.5);
 
-    this.addChild(this.lable);
+    this.addChild(this.label);
   }
 }
 LvlpickBtn.STATUS_LOCKED = 1;

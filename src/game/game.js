@@ -61,7 +61,7 @@ class Game extends Phaser.State {
     this.createSnakes();
     this.createHintTimer();
     this.createScoreBadge();
-    this.createScoreLable();
+    this.createScoreLabel();
     this.initializationFullScreen();
 
     this.createMeteor();
@@ -145,9 +145,9 @@ class Game extends Phaser.State {
   /**
    * Add score on stage
    */
-  createScoreLable() {
+  createScoreLabel() {
     const randomColorSet = this.game.rnd.pick(this.colorSets);
-    const color = '#00E676'; // + Phaser.Color.componentToHex(randomColorSet.getLastColor());
+    const color = '#00E676';
     const marginRight = 15;
     const marginTop = 15;
 
@@ -157,25 +157,33 @@ class Game extends Phaser.State {
       fill: color
     }
 
-    this.scoreLable = new Engine.ScoreLable(
+    this.scoreLabel = new Engine.ScoreLabel(
       this.game,
       this.game.width - marginRight,
       marginTop,
       0,
       style
     );
-    this.scoreLable.anchor.setTo(1, 0);
-    this.scoreLable.alpha = 0;
+    this.scoreLabel.anchor.setTo(1, 0);
+    this.scoreLabel.alpha = 0;
 
-    this.add.tween(this.scoreLable)
+    this.add.tween(this.scoreLabel)
       .to({
         alpha: 1
       })
       .start();
 
     // TODO: TEMP
-    this.scoreLable.inputEnabled = true;
-    this.scoreLable.events.onInputDown.add(this.toggleFullScreen, this);
+    this.scoreLabel.inputEnabled = true;
+    this.scoreLabel.events.onInputDown.add(this.toggleFullScreen, this);
+  }
+
+  createLvlLabel() {
+    const style = {
+
+    };
+
+    this.lvlLabel = this.add.text();
   }
 
   createHintTimer() {
@@ -443,12 +451,12 @@ class Game extends Phaser.State {
     val = Math.round(val);
 
     this.score += val;
-    this.scoreLable.changeValue(this.score);
+    this.scoreLabel.changeValue(this.score);
   }
 
   resizeScreen() {
-    this.scoreLable.x = this.game.width - 15;
-    this.scoreLable.y = 15;
+    this.scoreLabel.x = this.game.width - 15;
+    this.scoreLabel.y = 15;
 
     this.universeFirst.resize();
     this.universeSecond.resize();
@@ -605,8 +613,8 @@ class Game extends Phaser.State {
       snake.run(
         x,
         y,
-        this.scoreLable.world.x,
-        this.scoreLable.world.y,
+        this.scoreLabel.world.x,
+        this.scoreLabel.world.y,
         impulseX,
         impulseY,
         colorGradation.getRandomColor()

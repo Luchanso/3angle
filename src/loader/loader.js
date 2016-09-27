@@ -5,7 +5,7 @@ class Loader extends Phaser.State {
 
   preload() {
     this.game.stage.backgroundColor = '#000';
-    this.addProgressLable();
+    this.addProgressLabel();
 
     this.load.onFileComplete.add(this.refreshProgress, this);
 
@@ -34,18 +34,18 @@ class Loader extends Phaser.State {
     this.game.cache.addTextureAtlas(Wave.bitmapKey, '', data.bitmap.canvas, data.atlasData, Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
   }
 
-  addProgressLable() {
+  addProgressLabel() {
     let style = {
       font: '41px Open Sans',
       fill: '#00E676',
     }
 
-    this.progressLable = this.add.text(this.game.world.centerX, this.game.world.centerY, 'Loading: 0% (0/0)', style);
-    this.progressLable.anchor.setTo(0.5);
+    this.progressLabel = this.add.text(this.game.world.centerX, this.game.world.centerY, 'Loading: 0% (0/0)', style);
+    this.progressLabel.anchor.setTo(0.5);
   }
 
   refreshProgress(progress, cacheKey, success, totalLoaded, totalFiles) {
-    this.progressLable.text = `Loading ${progress}% (${totalLoaded}/${totalFiles})`;
+    this.progressLabel.text = `Loading ${progress}% (${totalLoaded}/${totalFiles})`;
   }
 }
 

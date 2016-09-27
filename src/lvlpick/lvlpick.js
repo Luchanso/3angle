@@ -13,7 +13,7 @@ class Lvlpick extends Phaser.State {
   create() {
     this.animateBackground();
 
-    this.createLable();
+    this.createLabel();
     this.createBtns();
   }
 
@@ -61,7 +61,7 @@ class Lvlpick extends Phaser.State {
       }, this);
   }
 
-  createLable() {
+  createLabel() {
     const style = {
       font: '51px Open Sans',
       fill: 'white'
@@ -70,18 +70,18 @@ class Lvlpick extends Phaser.State {
     const animationDelay = 350;
     const marginTop = 100;
 
-    this.lable = this.add.text(
+    this.label = this.add.text(
       this.game.world.centerX,
       marginTop,
       'Select level',
       style
     );
 
-    this.lable.anchor.setTo(0.5, 0);
+    this.label.anchor.setTo(0.5, 0);
 
-    this.lable.alpha = 0;
+    this.label.alpha = 0;
 
-    this.add.tween(this.lable)
+    this.add.tween(this.label)
       .to({
         alpha: 1
       }, animationTime)

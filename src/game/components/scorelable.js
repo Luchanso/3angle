@@ -1,4 +1,4 @@
-class ScoreLable extends Phaser.Text {
+class ScoreLabel extends Phaser.Text {
   constructor(game, x, y, score, style) {
     super(game, x, y, `Score: ${Math.round(score)}`, style);
 
@@ -8,7 +8,7 @@ class ScoreLable extends Phaser.Text {
   }
 
   /**
-   * Update score lable value
+   * Update score label value
    * @param  {Number} score New score
    */
   changeValue(score) {
@@ -17,7 +17,7 @@ class ScoreLable extends Phaser.Text {
     let tween = this.game.add.tween(this)
       .to({
         score
-      }, ScoreLable.animationChangeVal)
+      }, ScoreLabel.animationChangeVal)
       .onUpdateCallback(() => {
         this.text = `Score: ${Math.round(this.score)}`;
       }, this);
@@ -31,5 +31,5 @@ class ScoreLable extends Phaser.Text {
   }
 }
 
-ScoreLable.animationChangeVal = 500;
-Engine.ScoreLable = ScoreLable;
+ScoreLabel.animationChangeVal = 500;
+Engine.ScoreLabel = ScoreLabel;

@@ -34,25 +34,30 @@ class Lvl {
 
   saveDataInStorage() {
     let data = {
-
+      current: this._current,
+      opend: this._opend,
+      done: this._done,
     }
-    
+
     window.localStorage.setImage('lvl', JSON.stringify(data));
   }
 
   get current() { return this._current; }
   set current(value) {
     this._current = value;
+    this.saveDataInStorage();
   }
 
   get opend() { return this._opend; }
   set opend(value) {
     this._opend = value;
+    this.saveDataInStorage();
   }
 
   get done() { return this._done; }
   set done(value) {
     this._done = value;
+    this.saveDataInStorage();
   }
 }
 

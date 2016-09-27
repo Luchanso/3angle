@@ -2,7 +2,7 @@ class ScoreBadge extends Phaser.Graphics {
   constructor(game, x, y) {
     super(game, x, y);
 
-    this.createLable();
+    this.createLabel();
     this.reDrawBadge();
 
     this.isVisible = false;
@@ -14,20 +14,20 @@ class ScoreBadge extends Phaser.Graphics {
   }
   set score(value) {
     this._score = value;
-    this.lable.text = value.toString();
+    this.label.text = value.toString();
     this.reDrawBadge();
   }
 
-  createLable() {
+  createLabel() {
     const style = {
       font: '26px Open Sans',
       fill: 'white'
     }
 
-    this.lable = this.game.make.text(0, 0, '0', style);
-    this.lable.anchor.setTo(0.5);
+    this.label = this.game.make.text(0, 0, '0', style);
+    this.label.anchor.setTo(0.5);
 
-    this.addChild(this.lable);
+    this.addChild(this.label);
   }
 
   reDrawBadge() {
@@ -38,7 +38,7 @@ class ScoreBadge extends Phaser.Graphics {
     this.clear();
 
     this.beginFill(backgroundColor, 0.8);
-    this.drawRoundedRect(-(this.lable.width + paddings * 2) / 2, -(this.lable.height + paddings) / 2, this.lable.width + paddings * 2, this.lable.height, radius);
+    this.drawRoundedRect(-(this.label.width + paddings * 2) / 2, -(this.label.height + paddings) / 2, this.label.width + paddings * 2, this.label.height, radius);
     this.endFill();
   }
 
