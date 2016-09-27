@@ -12,24 +12,7 @@ class Menu extends Phaser.State {
   }
 
   create() {
-    this.createLogo();
     this.createBtns();
-  }
-
-  createLogo() {
-    return;
-    const style = {
-      font: '52px Open Sans',
-      fill: 'white'
-    };
-
-    this.logoLabel = this.add.text(
-      this.game.world.centerX,
-      this.game.world.centerY / 2,
-      'Three Angle',
-      style
-    );
-    this.logoLabel.anchor.setTo(0.5);
   }
 
   createBtns() {
