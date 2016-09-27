@@ -34,8 +34,8 @@ class CircleButton extends Phaser.Graphics {
   animateBtn() {
     const animationTime = 350;
     const newBtnRadius = Math.sqrt(
-      this.game.width**2 +
-      this.game.height**2
+      Math.pow(this.game.width, 2) +
+      Math.pow(this.game.height, 2)
     );
 
     this.parent.bringToTop(this);
