@@ -174,6 +174,7 @@ class Menu extends Phaser.State {
   }
 
   createStartGameText() {
+    const delay = 250;
     const style = {
       font: '41px Open Sans',
       fill: '#FFFFFF',
@@ -192,12 +193,12 @@ class Menu extends Phaser.State {
     this.add.tween(this.startText)
       .to({
         alpha: 1
-      }, 1000)
+      }, delay)
       .start();
   }
 
   clickPlayBtn() {
-    const delay = 2000;
+    const delay = 850;
 
     this.createStartGameText();
     this.createBlackoutAnimation(delay)
