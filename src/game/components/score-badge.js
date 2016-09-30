@@ -37,9 +37,17 @@ class ScoreBadge extends Phaser.Graphics {
 
     this.clear();
 
+    let x = -(this.label.width + paddings * 2) / 2;
+    let y = -(this.label.width + paddings * 2) / 2;
+    let width = this.label.width + paddings * 2;
+    let height = this.label.height + paddings * 2;
+
     this.beginFill(backgroundColor, 0.8);
-    this.drawRoundedRect(-(this.label.width + paddings * 2) / 2, -(this.label.height + paddings) / 2, this.label.width + paddings * 2, this.label.height, radius);
+    this.drawRoundedRect(x, y, width, height, radius);
     this.endFill();
+
+    this.actualWidth = width;
+    this.actualHeight = height;
   }
 
   show() {
@@ -49,10 +57,12 @@ class ScoreBadge extends Phaser.Graphics {
 
     const animationTime = 1000;
 
+    this.game.tweens.removeFrom(this);
+
     let tween = this.game.add.tween(this)
       .to({
-        width: this.width,
-        height: this.height,
+        width: this.actualWidth,
+        height: this.actualHeight,
       }, animationTime, Phaser.Easing.Elastic.Out);
 
     this.width = 0;
@@ -72,6 +82,8 @@ class ScoreBadge extends Phaser.Graphics {
     const animationTime = 250;
     const width = this.width;
     const height = this.height;
+
+    this.game.tweens.removeFrom(this);
 
     let tween = this.game.add.tween(this)
       .to({
