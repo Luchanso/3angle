@@ -4,6 +4,11 @@ class Loader extends Phaser.State {
   }
 
   preload() {
+    const illuminatiSize = {
+      width: 440,
+      height: 381
+    }
+
     this.game.stage.backgroundColor = '#000';
     this.addProgressLabel();
 
@@ -16,6 +21,12 @@ class Loader extends Phaser.State {
     this.load.image('icon-star', 'assets/img/icon-star.png');
     this.load.image('icon-apps', 'assets/img/icon-apps.png');
 
+    this.load.image('illuminati', 'assets/img/illuminati.png');
+    this.load.image('illuminati3d-1', 'assets/img/illuminati3d-1.png');
+    this.load.image('illuminati3d-2', 'assets/img/illuminati3d-2.png');
+
+    // this.loadSounds();
+
     this.game.cache.addBitmapData(Engine.Triangle.bitmapKey, Engine.Triangle.generateSprite(this.game));
     this.game.cache.addBitmapData(Engine.Meteor.bitmapKey, Engine.Meteor.generateSprite(this.game));
 
@@ -23,9 +34,9 @@ class Loader extends Phaser.State {
   }
 
   create() {
-    // let numberOfGradation = 3;
-    this.state.start('Menu');
-    // this.state.start('Game', true, false, numberOfGradation);
+    let numberOfGradation = 3;
+    // this.state.start('Menu');
+    this.state.start('Game', true, false, numberOfGradation);
     // this.state.start('Lvlpick', true, false, 0x3F51B5);
   }
 
@@ -42,6 +53,14 @@ class Loader extends Phaser.State {
 
     this.progressLabel = this.add.text(this.game.world.centerX, this.game.world.centerY, 'Loading: 0% (0/0)', style);
     this.progressLabel.anchor.setTo(0.5);
+  }
+
+  loadSounds() {
+    const numberOfSound = 12;
+
+    for (let i = 0; i < numberOfSound; i++) {
+      this.load.audio('sound-note' + i, `assets/sounds/piano (${i}).wav`);
+    }
   }
 
   refreshProgress(progress, cacheKey, success, totalLoaded, totalFiles) {
