@@ -73,7 +73,6 @@ class Game extends Phaser.State {
   }
 
   render() {
-    // this.game.debug.sprite
   }
 
   update() {}
@@ -212,16 +211,20 @@ class Game extends Phaser.State {
     const animationType = Phaser.Easing.Linear.None;
 
     this.ill = new Engine.Illuminati(this.game, x, y);
+    this.ill.tint = 0x00E676;
 
     this.add.tween(this.ill)
       .to({
-        x: x + 200
+        x: x + 200,
+        alpha: 1
       }, animationTime, animationType)
       .to({
-        x: x - 200
+        x: x - 200,
+        alpha: 0
       }, animationTime * 2, animationType)
       .to({
-        x: x
+        x: x,
+        alpha: 1
       }, animationTime, animationType)
       .loop(-1)
       .start();
@@ -435,7 +438,7 @@ class Game extends Phaser.State {
       this.scoreBadge.score = Math.round(Math.pow(count, 2.15) * 10);
       this.scoreBadge.show();
     }
-    // this.tone.up();
+    this.tone.up();
   }
 
   newUnselect(count) {
@@ -444,7 +447,7 @@ class Game extends Phaser.State {
     } else {
       this.scoreBadge.score = Math.round(Math.pow(count, 2.15) * 10);
     }
-    // this.tone.low();
+    this.tone.low();
   }
 
   /**
