@@ -9,6 +9,8 @@ class Illuminati extends Phaser.Sprite {
 
     this.width *= ratioSize;
     this.height *= ratioSize;
+
+    this.lastTweens = {};
   }
 
   create3DAnimation() {
@@ -47,10 +49,11 @@ class Illuminati extends Phaser.Sprite {
     const targetAlpha = 0.5;
     const animationFunc = Illuminati.animation3DEasing
 
-    this.game.tweens.removeFrom(this.sprite3DRight);
-    this.game.tweens.removeFrom(this.sprite3DLeft);
+    if (this.tweensIsStarted()) {
+      return;
+    }
 
-    this.game.add.tween(this.sprite3DLeft)
+    let tweenLeft = this.game.add.tween(this.sprite3DLeft)
       .to({
         x: this.sprite3DLeft.x - maxOffsetX,
         y: this.sprite3DLeft.y - maxOffsetY,
@@ -63,7 +66,7 @@ class Illuminati extends Phaser.Sprite {
       }, animationTime, animationFunc)
       .start();
 
-    this.game.add.tween(this.sprite3DRight)
+    let tweenRight = this.game.add.tween(this.sprite3DRight)
       .to({
         x: this.sprite3DRight.x + maxOffsetX,
         y: this.sprite3DRight.y + maxOffsetY,
@@ -75,6 +78,17 @@ class Illuminati extends Phaser.Sprite {
         alpha: 0
       }, animationTime, animationFunc)
       .start();
+
+    this.lastTweens.tween3DLeft = tweenLeft;
+    this.lastTweens.tween3DRight = tweenRight;
+  }
+
+  tweensIsStarted() {
+    return this.lastTweens.tween3DLeft &&
+      (
+        this.lastTweens.tween3DLeft.isRunning ||
+        this.lastTweens.tween3DRight.isRunning
+      );
   }
 
   static animation3DEasing(time) {
@@ -99,18 +113,16 @@ class Illuminati extends Phaser.Sprite {
       } else if (time < 0.8) {
         min = 0.65; max = 1;
       } else if (time < 0.9) {
-        min = 0.7; max = 1;
+        min = 0.7; max = 1.5;
+      } else if (time < 0.99) {
+        min = 0.95; max = 1;
       } else {
-        min = 0.95; max = 1.5;
+        min = 1; max = 1;
       }
 
-      result = min + Math.random() * max;
+      result = min + Math.random() * (max - min);
 
       return result;
-  }
-
-  changeColor(color) {
-
   }
 }
 
