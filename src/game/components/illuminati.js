@@ -2,7 +2,7 @@ class Illuminati extends Phaser.Sprite {
   constructor(game, x = 0, y = 0) {
     const ratioSize = 0.4;
 
-    super(game, x, y, 'illuminati-original', 0);
+    super(game, x, y, 'illuminati', 0);
 
     this.create3DAnimation();
     this.createActionTimer();
