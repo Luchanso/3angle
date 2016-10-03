@@ -25,7 +25,7 @@ class ScoreBadge extends Phaser.Graphics {
     }
 
     this.label = this.game.make.text(0, 0, '0', style);
-    this.label.anchor.setTo(0.5);
+    this.label.anchor.setTo(0.5, 0.4);
 
     this.addChild(this.label);
   }
@@ -38,7 +38,7 @@ class ScoreBadge extends Phaser.Graphics {
     this.clear();
 
     let x = -(this.label.width + paddings * 2) / 2;
-    let y = -(this.label.width + paddings * 2) / 2;
+    let y = -(this.label.height + paddings * 2) / 2;
     let width = this.label.width + paddings * 2;
     let height = this.label.height + paddings * 2;
 
